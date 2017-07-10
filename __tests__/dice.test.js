@@ -37,6 +37,19 @@ expect.extend({
         `expected all to${pass ? ' not ' : ' '}be equal to ${expected}`
       )
     }
+  },
+  toHaveVariance(received, expected, margin = 0.5) {
+    const average = received.reduce(plus) / received.length
+    const variance = received.map((value) => (Math.pow(value - average, 2)))
+      .reduce(plus) / (received.length - 1)
+    const pass = variance > expected - margin && variance < expected + margin
+
+    return {
+      pass,
+      message: () => (
+        `expected variance to${pass ? ' not ' : ' '}be around ${expected} (margin: ${margin}), got ${variance}`
+      )
+    }
   }
 })
 
@@ -69,6 +82,14 @@ const testDie = (die, testSpecs, numberRolls = defaultNumberRolls) => {
 
     it(`has an expected value of ${average}`, () => {
       expect(rolls).toBeOnAverage(average, margin)
+    })
+  }
+
+  if ('variance' in testSpecs) {
+    let { variance, margin } = testSpecs.variance
+
+    it(`has a variance of ${variance}`, () => {
+      expect(rolls).toHaveVariance(variance, margin)
     })
   }
 
