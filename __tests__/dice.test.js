@@ -1,9 +1,9 @@
 const { d } = require('../src/dice.js')
 
-const defaultNumberRolls = 100
+const defaultNumberRolls = 500
 
 expect.extend({
-  toBeOnAverage(received, expected, margin = 0.3) {
+  toBeOnAverage(received, expected, margin = 0.5) {
     const average = received.reduce(plus) / received.length
     const pass = average > expected - margin && average < expected + margin
 
@@ -40,7 +40,7 @@ expect.extend({
   }
 })
 
-const plus = (a, b) => (a + b)
+const plus = (a, b) => a + b
 
 const rollForTest = (die, numberRolls) => {
   let pools = []
@@ -55,7 +55,7 @@ const rollForTest = (die, numberRolls) => {
   return { pools, rolls }
 }
 
-const testDie = (die, numberRolls, testSpecs) => {
+const testDie = (die, testSpecs, numberRolls = defaultNumberRolls) => {
   let { pools, rolls } = rollForTest(die, numberRolls)
 
   if ('diceCount' in testSpecs) {
@@ -73,47 +73,52 @@ const testDie = (die, numberRolls, testSpecs) => {
   }
 
   if ('bounds' in testSpecs) {
-    let { low, high } = testSpecs.bounds
+    let { low, high, expectExtrema } = testSpecs.bounds
 
     it(`rolls between ${low} and ${high}`, () => {
       expect(rolls).toBeBetween(low, high)
     })
 
-    it('attains its minimum', () => {
-      expect(rolls).toContain(low)
-    })
+    if (expectExtrema) {
+      it('attains its minimum', () => {
+        expect(rolls).toContain(low)
+      })
 
-    it('attains its maximum', () => {
-      expect(rolls).toContain(high)
-    })
+      it('attains its maximum', () => {
+        expect(rolls).toContain(high)
+      })
+    }
+  }
+}
+
+const basicDieTestSpecs = (number, sides) => {
+  return {
+    diceCount: number,
+    average: {
+      average: (number * (sides + 1)) / 2
+    },
+    variance: {
+      variance: (number * (sides * sides - 1)) / 12
+    },
+    bounds: {
+      low: number,
+      high: number * sides,
+      expectExtrema: true
+    }
+  }
+}
   }
 }
 
 const describeBasicDie = (number, sides, numberRolls = defaultNumberRolls) => {
   describe(`${number}d${sides}`, () => {
     const die = d(number, sides)
-    const min = number
-    const max = number * sides
-
-    const testSpecs = {
-      diceCount: number,
-      average: {
-        average: (min + max) / 2,
-      },
-      bounds: {
-        low: min,
-        high: max,
-        expectLow: true,
-        expectHigh: true
-      }
-    }
-
-    testDie(die, numberRolls, testSpecs)
+    testDie(die, basicDieTestSpecs(number, sides), numberRolls)
   })
 }
 
 describe('basic dice', () => {
   describeBasicDie(1, 6)
-  describeBasicDie(2, 8)
+  describeBasicDie(2, 8, 500)
   describeBasicDie(20, 1)
 })
