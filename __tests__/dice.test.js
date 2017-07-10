@@ -60,6 +60,7 @@ expect.extend({
 })
 
 const plus = (a, b) => a + b
+const times = (a, b) => a * b
 
 const rollForTest = (die, numberRolls) => {
   let pools = []
@@ -130,7 +131,7 @@ const basicDieTestSpecs = (number, sides) => {
     bounds: {
       low: number,
       high: number * sides,
-      expectExtrema: true
+      expectExtrema: number * sides < 50
     }
   }
 }
@@ -156,6 +157,8 @@ const combinedDiceTestSpecs = (dieSpecs) => {
     bounds: {
       low: combineSpecField(spec => (spec.bounds.low)),
       high: combineSpecField(spec => (spec.bounds.high)),
+      expectExtrema: dieSpecs.map(spec => (Math.pow(spec.sides, spec.number)))
+      .reduce(times) < 50
     }
   }
 }
