@@ -1,4 +1,4 @@
-const { d, add } = require('../src/dice.js')
+const { d, add, subtract } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
 const defaultError = 0.2
@@ -119,18 +119,21 @@ const testDie = (die, testSpecs, numberRolls = defaultNumberRolls) => {
   }
 }
 
-const basicDieTestSpecs = (number, sides) => {
+const basicDieTestSpecs = (number, sides, negative = false) => {
+  const multiplier = negative ? -1 : 1
+  const low = negative ? -(number * sides) : number
+  const high = negative ? -number : number * sides
   return {
     diceCount: number,
     average: {
-      average: (number * (sides + 1)) / 2
+      average: (number * (sides + 1)) / 2 * multiplier
     },
     variance: {
       variance: (number * (sides * sides - 1)) / 12
     },
     bounds: {
-      low: number,
-      high: number * sides,
+      low: low,
+      high: high,
       expectExtrema: number * sides < 50
     }
   }
@@ -138,7 +141,9 @@ const basicDieTestSpecs = (number, sides) => {
 
 const combinedDiceTestSpecs = (dieSpecs) => {
   const individualTestSpecs =
-    dieSpecs.map(spec => (basicDieTestSpecs(spec.number, spec.sides)))
+    dieSpecs.map(spec => (
+      basicDieTestSpecs(spec.number, spec.sides, spec.negative)
+    ))
 
   const combineSpecField = (fieldGetter) => {
     return individualTestSpecs.reduce((total, spec) => {
@@ -158,7 +163,7 @@ const combinedDiceTestSpecs = (dieSpecs) => {
       low: combineSpecField(spec => (spec.bounds.low)),
       high: combineSpecField(spec => (spec.bounds.high)),
       expectExtrema: dieSpecs.map(spec => (Math.pow(spec.sides, spec.number)))
-      .reduce(times) < 50
+        .reduce(times) < 50
     }
   }
 }
@@ -170,14 +175,20 @@ const describeBasicDie = (number, sides, numberRolls = defaultNumberRolls) => {
   })
 }
 
-const describeCompoundDice = (diceSpecs, numberRolls = defaultNumberRolls) => {
-  const dieString = diceSpecs.reduce((string, spec, index) => (
+const getDieString = diceSpecs => (
+  diceSpecs.reduce((string, spec, index) => (
     string + `${spec.number}d${spec.sides}` +
-      (index < diceSpecs.length - 1 ? ' + ' : '')
+    (index < diceSpecs.length - 1 ?
+      (diceSpecs[index + 1].negative ? ' - ' : ' + ')
+      : '')
   ), '')
+)
 
+const describeCompoundDice = (diceSpecs, numberRolls = defaultNumberRolls) => {
+  const dieString = getDieString(diceSpecs)
   const die = diceSpecs.slice(1).reduce((die, spec) => {
-    return add(die, d(spec.number, spec.sides))
+    const combinator = spec.negative ? subtract : add
+    return combinator(die, d(spec.number, spec.sides))
   }, d(diceSpecs[0].number, diceSpecs[0].sides))
 
   describe(dieString, () => testDie(die, combinedDiceTestSpecs(diceSpecs),
@@ -196,5 +207,17 @@ describe('add', () => {
     { number: 3, sides: 6 },
     { number: 2, sides: 8 },
     { number: 1, sides: 1 }
+  ])
+})
+
+describe('subtract', () => {
+  describeCompoundDice([
+    { number: 1, sides: 6 },
+    { number: 1, sides: 4, negative: true }
+  ])
+  describeCompoundDice([
+    { number: 3, sides: 6 },
+    { number: 2, sides: 8, negative: true },
+    { number: 1, sides: 1, negative: true }
   ])
 })
