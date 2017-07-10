@@ -10,9 +10,16 @@ const d = (number, sides) => {
   }
 }
 
+const add = (die1, die2) => {
+  return () => {
+    return die1().concat(die2())
+  }
+}
+
 const roll = (die) => {
   return die().reduce((a, b) => (a + b))
 }
 
 exports.d = d
+exports.add = add
 exports.roll = roll
