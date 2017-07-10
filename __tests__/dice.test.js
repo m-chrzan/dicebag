@@ -1,16 +1,22 @@
 const { d, add } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
+const defaultError = 0.2
+
+const isWithinError = (value, expected, error) => {
+  const margin = expected * error
+  return value >= expected - margin && value <= expected + margin
+}
 
 expect.extend({
-  toBeOnAverage(received, expected, margin = 0.5) {
+  toBeOnAverage(received, expected, error = defaultError) {
     const average = received.reduce(plus) / received.length
-    const pass = average > expected - margin && average < expected + margin
+    const pass = isWithinError(average, expected, error)
 
     return {
       pass,
       message: () => (
-        `expected average to${pass ? ' not ' : ' '}be around ${expected} (margin: ${margin}), got ${average}`
+        `expected average to${pass ? ' not ' : ' '}be around ${expected} (error: ${error}%), got ${average}`
       )
     }
   },
@@ -38,16 +44,16 @@ expect.extend({
       )
     }
   },
-  toHaveVariance(received, expected, margin = 0.5) {
+  toHaveVariance(received, expected, error = defaultError) {
     const average = received.reduce(plus) / received.length
     const variance = received.map((value) => (Math.pow(value - average, 2)))
       .reduce(plus) / (received.length - 1)
-    const pass = variance > expected - margin && variance < expected + margin
+    const pass = isWithinError(variance, expected, error)
 
     return {
       pass,
       message: () => (
-        `expected variance to${pass ? ' not ' : ' '}be around ${expected} (margin: ${margin}), got ${variance}`
+        `expected variance to${pass ? ' not ' : ' '}be around ${expected} (error: ${error}%), got ${variance}`
       )
     }
   }
@@ -78,18 +84,18 @@ const testDie = (die, testSpecs, numberRolls = defaultNumberRolls) => {
   }
 
   if ('average' in testSpecs) {
-    let { average, margin } = testSpecs.average
+    let { average, error } = testSpecs.average
 
     it(`has an expected value of ${average}`, () => {
-      expect(rolls).toBeOnAverage(average, margin)
+      expect(rolls).toBeOnAverage(average, error)
     })
   }
 
   if ('variance' in testSpecs) {
-    let { variance, margin } = testSpecs.variance
+    let { variance, error } = testSpecs.variance
 
     it(`has a variance of ${variance}`, () => {
-      expect(rolls).toHaveVariance(variance, margin)
+      expect(rolls).toHaveVariance(variance, error)
     })
   }
 
