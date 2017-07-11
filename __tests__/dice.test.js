@@ -89,6 +89,13 @@ const testDie = (die, testSpecs, numberRolls = defaultNumberRolls) => {
     })
   }
 
+  if ('variableDiceCount' in testSpecs) {
+    const {min, max} = testSpecs.variableDiceCount
+    it(`rolls between ${min} and ${max} dice`, () => {
+      expect(pools.map((pool) => (pool.length))).toBeBetween(min, max)
+    })
+  }
+
   if ('average' in testSpecs) {
     let { average, error } = testSpecs.average
 
@@ -275,5 +282,27 @@ describe('subtract', () => {
     { number: 3, sides: 6 },
     { number: 2, sides: 8, negative: true },
     { number: 1, sides: 1, negative: true }
-  ])
+  ], defaultNumberRolls, { varianceError: 1 })
+})
+
+describe('compound dice', () => {
+  describe('(1d4)d(1d6)', () => {
+    const die = d(d(constant(1), constant(4)), d(constant(1), constant(6)))
+    const testSpec = {
+      variableDiceCount: {
+        min: 1,
+        max: 4,
+      },
+      average: {
+        average: 5.625
+      },
+      bounds: {
+        low: 1,
+        high: 24,
+        expectLow: true
+      }
+    }
+
+    testDie(die, testSpec)
+  })
 })
