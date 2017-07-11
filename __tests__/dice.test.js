@@ -4,6 +4,11 @@ const defaultNumberRolls = 500
 const defaultError = 0.2
 
 const isWithinError = (value, expected, error) => {
+  if (expected < 0) {
+    value *= -1
+    expected *= -1
+  }
+
   const margin = expected * error
   return value >= expected - margin && value <= expected + margin
 }
@@ -16,7 +21,7 @@ expect.extend({
     return {
       pass,
       message: () => (
-        `expected average to${pass ? ' not ' : ' '}be around ${expected} (error: ${error}%), got ${average}`
+        `expected average to${pass ? ' not ' : ' '}be around ${expected} (error: ${error * 100}%), got ${average}`
       )
     }
   },
@@ -53,7 +58,7 @@ expect.extend({
     return {
       pass,
       message: () => (
-        `expected variance to${pass ? ' not ' : ' '}be around ${expected} (error: ${error}%), got ${variance}`
+        `expected variance to${pass ? ' not ' : ' '}be around ${expected} (error: ${error * 100}%), got ${variance}`
       )
     }
   }
@@ -101,17 +106,19 @@ const testDie = (die, testSpecs, numberRolls = defaultNumberRolls) => {
   }
 
   if ('bounds' in testSpecs) {
-    let { low, high, expectExtrema } = testSpecs.bounds
+    let { low, high, expectLow, expectHigh } = testSpecs.bounds
 
     it(`rolls between ${low} and ${high}`, () => {
       expect(rolls).toBeBetween(low, high)
     })
 
-    if (expectExtrema) {
+    if (expectLow) {
       it('attains its minimum', () => {
         expect(rolls).toContain(low)
       })
+    }
 
+    if (expectHigh) {
       it('attains its maximum', () => {
         expect(rolls).toContain(high)
       })
@@ -123,6 +130,7 @@ const basicDieTestSpecs = (number, sides, negative = false) => {
   const multiplier = negative ? -1 : 1
   const low = negative ? -(number * sides) : number
   const high = negative ? -number : number * sides
+  const expectExtrema = number * sides < 50
   return {
     diceCount: number,
     average: {
@@ -134,7 +142,8 @@ const basicDieTestSpecs = (number, sides, negative = false) => {
     bounds: {
       low: low,
       high: high,
-      expectExtrema: number * sides < 50
+      expectLow: expectExtrema,
+      expectHigh: expectExtrema
     }
   }
 }
@@ -151,6 +160,9 @@ const combinedDiceTestSpecs = (dieSpecs) => {
     }, 0)
   }
 
+  const expectExtrema =
+    dieSpecs.map(spec => (Math.pow(spec.sides, spec.number)))
+        .reduce(times) < 50
   return {
     diceCount: combineSpecField(spec => (spec.diceCount)),
     average: {
@@ -162,8 +174,8 @@ const combinedDiceTestSpecs = (dieSpecs) => {
     bounds: {
       low: combineSpecField(spec => (spec.bounds.low)),
       high: combineSpecField(spec => (spec.bounds.high)),
-      expectExtrema: dieSpecs.map(spec => (Math.pow(spec.sides, spec.number)))
-        .reduce(times) < 50
+      expectLow: expectExtrema,
+      expectHigh: expectExtrema
     }
   }
 }
