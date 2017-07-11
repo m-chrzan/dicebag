@@ -1,4 +1,4 @@
-const { d, add, subtract } = require('../src/dice.js')
+const { constant, d, add, subtract } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
 const defaultError = 0.2
@@ -182,7 +182,7 @@ const combinedDiceTestSpecs = (dieSpecs) => {
 
 const describeBasicDie = (number, sides, numberRolls = defaultNumberRolls) => {
   describe(`${number}d${sides}`, () => {
-    const die = d(number, sides)
+    const die = d(constant(number), constant(sides))
     testDie(die, basicDieTestSpecs(number, sides), numberRolls)
   })
 }
@@ -200,12 +200,56 @@ const describeCompoundDice = (diceSpecs, numberRolls = defaultNumberRolls) => {
   const dieString = getDieString(diceSpecs)
   const die = diceSpecs.slice(1).reduce((die, spec) => {
     const combinator = spec.negative ? subtract : add
-    return combinator(die, d(spec.number, spec.sides))
-  }, d(diceSpecs[0].number, diceSpecs[0].sides))
+    return combinator(die, d(constant(spec.number), constant(spec.sides)))
+  }, d(constant(diceSpecs[0].number), constant(diceSpecs[0].sides)))
 
   describe(dieString, () => testDie(die, combinedDiceTestSpecs(diceSpecs),
     numberRolls))
 }
+
+describe('constant', () => {
+  describe('1', () => {
+    const die = constant(1)
+    testDie(die, {
+      diceCount: 1,
+      average: { average: 1 },
+      variance: { variance: 0 },
+      bounds: {
+        low: 1,
+        high: 1,
+        expectLow: true,
+      }
+    }, 10)
+  })
+
+  describe('10', () => {
+    const die = constant(10)
+    testDie(die, {
+      diceCount: 1,
+      average: { average: 10 },
+      variance: { variance: 0 },
+      bounds: {
+        low: 10,
+        high: 10,
+        expectLow: true,
+      }
+    }, 10)
+  })
+
+  describe('-5', () => {
+    const die = constant(-5)
+    testDie(die, {
+      diceCount: 1,
+      average: { average: -5 },
+      variance: { variance: 0 },
+      bounds: {
+        low: -5,
+        high: -5,
+        expectLow: true,
+      }
+    }, 10)
+  })
+})
 
 describe('basic dice', () => {
   describeBasicDie(1, 6)

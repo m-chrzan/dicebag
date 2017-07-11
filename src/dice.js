@@ -1,9 +1,14 @@
+const constant = n => () => [n]
+
 const d = (number, sides) => {
   return () => {
     let pool = []
 
-    for (let i = 0; i < number; i++) {
-      pool.push(1 + Math.floor(Math.random() * sides))
+    const currentNumber = number()
+    const currentSides = sides()
+
+    for (let i = 0; i < currentNumber; i++) {
+      pool.push(1 + Math.floor(Math.random() * currentSides))
     }
 
     return pool
@@ -32,6 +37,7 @@ const roll = (die) => {
   return die().reduce((a, b) => (a + b))
 }
 
+exports.constant = constant
 exports.d = d
 exports.add = add
 exports.subtract = subtract
