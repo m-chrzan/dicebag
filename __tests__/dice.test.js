@@ -169,7 +169,7 @@ const combinedDiceTestSpecs = (dieSpecs) => {
 
   const expectExtrema =
     dieSpecs.map(spec => (Math.pow(spec.sides, spec.number)))
-        .reduce(times) < 50
+      .reduce(times) < 50
   return {
     diceCount: combineSpecField(spec => (spec.diceCount)),
     average: {
@@ -304,5 +304,11 @@ describe('compound dice', () => {
     }
 
     testDie(die, testSpec)
+  })
+
+  describe('(2d1)d(2d1)', () => {
+    const die = d(d(constant(2), constant(1)), d(constant(2), constant(1)))
+
+    testDie(die, basicDieTestSpecs(2, 2))
   })
 })
