@@ -20,6 +20,7 @@ const newSkippableLexeme = (type, regex) => {
 
 newValueLexeme('number', '\\d+', Number)
 newLexemeType('d', 'd')
+newLexemeType('+', '\\+')
 newSkippableLexeme('whitespace', '\\s+')
 
 const lex = (expressionString) => {

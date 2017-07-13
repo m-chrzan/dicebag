@@ -40,4 +40,28 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('lexes addition', () => {
+    it('1d6 + 1d4', () => {
+      expect(lex('1d6 + 1d4')).toEqual([
+        { type: 'number', value: 1 },
+        { type: 'd' },
+        { type: 'number', value: 6 },
+        { type: '+' },
+        { type: 'number', value: 1 },
+        { type: 'd' },
+        { type: 'number', value: 4 }
+      ])
+    })
+
+    it('2d17 + 4', () => {
+      expect(lex('2d17 + 4')).toEqual([
+        { type: 'number', value: 2 },
+        { type: 'd' },
+        { type: 'number', value: 17 },
+        { type: '+' },
+        { type: 'number', value: 4 }
+      ])
+    })
+  })
 })
