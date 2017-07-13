@@ -9,6 +9,20 @@ describe('lex', () => {
     expect(lex('q')).toBe('error')
   })
 
+  describe('ignores whitespace', () => {
+    it('2 d 4', () => {
+      expect(lex('2 d 4')).not.toBe('error')
+    })
+
+    it('   1d8', () => {
+      expect(lex('   1d8')).not.toBe('error')
+    })
+
+    it('3d4   ', () => {
+      expect(lex('3d4   ')).not.toBe('error')
+    })
+  })
+
   describe('basic dice', () => {
     it('1d6', () => {
       expect(lex('1d6')).toEqual([
