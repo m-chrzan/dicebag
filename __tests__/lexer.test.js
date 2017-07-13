@@ -23,7 +23,7 @@ describe('lex', () => {
     })
   })
 
-  describe('basic dice', () => {
+  describe('lexes basic dice', () => {
     it('1d6', () => {
       expect(lex('1d6')).toEqual([
         { type: 'number', value: 1 },
