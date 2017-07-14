@@ -32,4 +32,28 @@ describe('parse', () => {
       }
     })
   })
+
+  it('parses constant addition', () => {
+    expect(parse('1 + 2')).toEqual({
+      type: 'add',
+      left: { type: 'constant', value: 1 },
+      right: { type: 'constant', value: 2 }
+    })
+  })
+
+  it('parses dice addition', () => {
+    expect(parse('1d6 + 2d8')).toEqual({
+      type: 'add',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 6 }
+      },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 8 }
+      }
+    })
+  })
 })

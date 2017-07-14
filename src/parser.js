@@ -24,6 +24,14 @@ newSymbol('d', null, 30, (left, parser) => {
   }
 })
 
+newSymbol('+', null, 20, (left, parser) => {
+  return {
+    type: 'add',
+    left: left,
+    right: parser.expression(20)
+  }
+})
+
 newSymbol('end', null, -1)
 
 const newParser = (tokens) => {
