@@ -26,17 +26,17 @@ describe('lex', () => {
   describe('lexes basic dice', () => {
     it('1d6', () => {
       expect(lex('1d6')).toEqual([
-        { type: 'number', value: 1 },
+        { type: 'constant', value: 1 },
         { type: 'd' },
-        { type: 'number', value: 6 }
+        { type: 'constant', value: 6 }
       ])
     })
 
     it('42d172', () => {
       expect(lex('42d172')).toEqual([
-        { type: 'number', value: 42 },
+        { type: 'constant', value: 42 },
         { type: 'd' },
-        { type: 'number', value: 172 }
+        { type: 'constant', value: 172 }
       ])
     })
   })
@@ -44,23 +44,23 @@ describe('lex', () => {
   describe('lexes addition', () => {
     it('1d6 + 1d4', () => {
       expect(lex('1d6 + 1d4')).toEqual([
-        { type: 'number', value: 1 },
+        { type: 'constant', value: 1 },
         { type: 'd' },
-        { type: 'number', value: 6 },
+        { type: 'constant', value: 6 },
         { type: '+' },
-        { type: 'number', value: 1 },
+        { type: 'constant', value: 1 },
         { type: 'd' },
-        { type: 'number', value: 4 }
+        { type: 'constant', value: 4 }
       ])
     })
 
     it('2d17 + 4', () => {
       expect(lex('2d17 + 4')).toEqual([
-        { type: 'number', value: 2 },
+        { type: 'constant', value: 2 },
         { type: 'd' },
-        { type: 'number', value: 17 },
+        { type: 'constant', value: 17 },
         { type: '+' },
-        { type: 'number', value: 4 }
+        { type: 'constant', value: 4 }
       ])
     })
   })

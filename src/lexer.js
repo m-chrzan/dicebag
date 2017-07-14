@@ -18,7 +18,7 @@ const newSkippableLexeme = (type, regex) => {
   newLexemeType(type, regex, () => {})
 }
 
-newValueLexeme('number', '\\d+', Number)
+newValueLexeme('constant', '\\d+', Number)
 newLexemeType('d', 'd')
 newLexemeType('+', '\\+')
 newSkippableLexeme('whitespace', '\\s+')
