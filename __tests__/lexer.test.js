@@ -64,4 +64,28 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('lexes subtraction', () => {
+    it('1d6 - 1d4', () => {
+      expect(lex('1d6 - 1d4')).toEqual([
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 6 },
+        { type: '-' },
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 4 }
+      ])
+    })
+
+    it('2d17 - 4', () => {
+      expect(lex('2d17 - 4')).toEqual([
+        { type: 'constant', value: 2 },
+        { type: 'd' },
+        { type: 'constant', value: 17 },
+        { type: '-' },
+        { type: 'constant', value: 4 }
+      ])
+    })
+  })
 })

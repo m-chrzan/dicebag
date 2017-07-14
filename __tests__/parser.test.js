@@ -56,4 +56,20 @@ describe('parse', () => {
       }
     })
   })
+
+  it('parses dice subtraction', () => {
+    expect(parse('1d6 - 2d8')).toEqual({
+      type: 'subtract',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 6 }
+      },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 8 }
+      }
+    })
+  })
 })
