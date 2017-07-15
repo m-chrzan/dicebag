@@ -1,4 +1,4 @@
-const { constant, d, add, subtract } = require('../src/dice.js')
+const { pool, constant, d, add, subtract } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
 const defaultError = 0.2
@@ -72,7 +72,7 @@ const rollForTest = (die, numberRolls) => {
   let rolls = []
 
   for (let i = 0; i < numberRolls; i++) {
-    let rolled = die()
+    let rolled = pool(die)
     pools.push(rolled)
     rolls.push(rolled.reduce(plus))
   }

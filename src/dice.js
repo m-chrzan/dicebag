@@ -1,7 +1,11 @@
 const constant = n => () => [n]
 
+const pool = (die) => {
+  return die()
+}
+
 const roll = (die) => {
-  return die().reduce((a, b) => (a + b))
+  return pool(die).reduce((a, b) => (a + b))
 }
 
 const d = (number, sides) => {
@@ -37,8 +41,10 @@ const subtract = (die1, die2) => {
   }
 }
 
+exports.pool = pool
+exports.roll = roll
 exports.constant = constant
 exports.d = d
 exports.add = add
 exports.subtract = subtract
-exports.roll = roll
+exports.negative = negative
