@@ -203,13 +203,16 @@ const getDieString = diceSpecs => (
   ), '')
 )
 
-const describeCompoundDice = (diceSpecs, numberRolls = defaultNumberRolls) => {
-  const dieString = getDieString(diceSpecs)
-  const die = diceSpecs.slice(1).reduce((die, spec) => {
+const combineDiceSpecs = diceSpecs => (
+  diceSpecs.slice(1).reduce((die, spec) => {
     const combinator = spec.negative ? subtract : add
     return combinator(die, d(constant(spec.number), constant(spec.sides)))
   }, d(constant(diceSpecs[0].number), constant(diceSpecs[0].sides)))
+)
 
+const describeCompoundDice = (diceSpecs, numberRolls = defaultNumberRolls) => {
+  const dieString = getDieString(diceSpecs)
+  const die = combineDiceSpecs(diceSpecs)
   describe(dieString, () => testDie(die, combinedDiceTestSpecs(diceSpecs),
     numberRolls))
 }
@@ -278,11 +281,17 @@ describe('subtract', () => {
     { number: 1, sides: 6 },
     { number: 1, sides: 4, negative: true }
   ])
-  describeCompoundDice([
-    { number: 3, sides: 6 },
-    { number: 2, sides: 8, negative: true },
-    { number: 1, sides: 1, negative: true }
-  ], defaultNumberRolls, { varianceError: 1 })
+  describe('3d6 - 2d8 - 1d1', () => {
+    const diceSpecs = [
+      { number: 3, sides: 6 },
+      { number: 2, sides: 8, negative: true },
+      { number: 1, sides: 1, negative: true }
+    ]
+    const die = combineDiceSpecs(diceSpecs)
+    const testSpecs = combinedDiceTestSpecs(diceSpecs)
+    testSpecs.average.error = 1
+    describe('3d6 - 2d8 - 1d1', () => testDie(die, testSpecs, 700))
+  })
 })
 
 describe('compound dice', () => {
