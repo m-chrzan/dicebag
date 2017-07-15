@@ -88,4 +88,32 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('lexes parentheses', () => {
+    it('(1d6)d6', () => {
+      expect(lex('(1d6)d6')).toEqual([
+        { type: '(' },
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 6 },
+        { type: ')' },
+        { type: 'd' },
+        { type: 'constant', value: 6 }
+      ])
+    })
+
+    it('2d(6+3)d4', () => {
+      expect(lex('2d(6+3)d4')).toEqual([
+        { type: 'constant', value: 2 },
+        { type: 'd' },
+        { type: '(' },
+        { type: 'constant', value: 6 },
+        { type: '+' },
+        { type: 'constant', value: 3 },
+        { type: ')' },
+        { type: 'd' },
+        { type: 'constant', value: 4 }
+      ])
+    })
+  })
 })

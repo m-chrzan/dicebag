@@ -16,6 +16,14 @@ newSymbol('constant', function() {
   return { type: 'constant', value: this.value }
 })
 
+newSymbol('(', function(parser) {
+  const value = parser.expression(1)
+  parser.match(')')
+  return value
+})
+
+newSymbol(')')
+
 newSymbol('d', null, 30, (left, parser) => {
   return {
     type: 'd',

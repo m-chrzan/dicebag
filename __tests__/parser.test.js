@@ -72,4 +72,34 @@ describe('parse', () => {
       }
     })
   })
+
+  describe('parsing parentheses', () => {
+    test('(1d6)d6', () => {
+      expect(parse('(1d6)d6')).toEqual({
+        type: 'd',
+        left: {
+          type: 'd',
+          left: { type: 'constant', value: 1 },
+          right: { type: 'constant', value: 6 }
+        },
+        right: { type: 'constant', value: 6 },
+      })
+    })
+
+    test('2d(6+3)d4', () => {
+      expect(parse('2d(6+3)d4')).toEqual({
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: {
+          type: 'd',
+          left: {
+            type: 'add',
+            left: { type: 'constant', value: 6 },
+            right: { type: 'constant', value: 3 }
+          },
+          right: { type: 'constant', value: 4 }
+        },
+      })
+    })
+  })
 })

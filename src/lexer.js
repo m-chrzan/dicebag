@@ -22,6 +22,8 @@ newValueLexeme('constant', '\\d+', Number)
 newLexemeType('d', 'd')
 newLexemeType('+', '\\+')
 newLexemeType('-', '-')
+newLexemeType('(', '\\(')
+newLexemeType(')', '\\)')
 newSkippableLexeme('whitespace', '\\s+')
 
 const lex = (expressionString) => {
