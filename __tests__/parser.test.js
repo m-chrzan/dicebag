@@ -73,6 +73,24 @@ describe('parse', () => {
     })
   })
 
+  it('parses negatives', () => {
+    expect(parse('-1 + (-(2d6))')).toEqual({
+      type: 'add',
+      left: {
+        type: 'negative',
+        value: { type: 'constant', value: 1 }
+      },
+      right: {
+        type: 'negative',
+        value: {
+          type: 'd',
+          left: { type: 'constant', value: 2 },
+          right: { type: 'constant', value: 6 }
+        }
+      }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({

@@ -40,7 +40,12 @@ newSymbol('+', null, 20, (left, parser) => {
   }
 })
 
-newSymbol('-', null, 20, (left, parser) => {
+newSymbol('-', (parser) => {
+  return {
+    type: 'negative',
+    value: parser.expression(40)
+  }
+}, 20, (left, parser) => {
   return {
     type: 'subtract',
     left: left,
@@ -56,10 +61,17 @@ const newParser = (tokens) => {
     currentToken: 0,
     token: function() { return this.tokens[this.currentToken] },
     advanceToken: function() { this.currentToken++ },
+    match: function(token) {
+      if (this.token().type === token) {
+        this.advanceToken()
+      } else {
+        throw 'error'
+      }
+    },
     expression: function(rbp) {
       let symbol = this.token()
-      let left = symbol.nud()
       this.advanceToken()
+      let left = symbol.nud(this)
 
       while (rbp < this.token().lbp) {
         symbol = this.token()
