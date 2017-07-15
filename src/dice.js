@@ -5,7 +5,7 @@ const pool = (die) => {
 }
 
 const roll = (die) => {
-  return pool(die).reduce((a, b) => (a + b))
+  return pool(die).reduce((a, b) => (a + b), 0)
 }
 
 const d = (number, sides) => {

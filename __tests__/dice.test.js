@@ -40,7 +40,7 @@ expect.extend({
   toAllBe(received, expected) {
     const pass = received.reduce((allOk, value) => {
       return allOk && value === expected
-    })
+    }, true)
 
     return {
       pass,
@@ -74,7 +74,7 @@ const rollForTest = (die, numberRolls) => {
   for (let i = 0; i < numberRolls; i++) {
     let rolled = pool(die)
     pools.push(rolled)
-    rolls.push(rolled.reduce(plus))
+    rolls.push(rolled.reduce(plus, 0))
   }
 
   return { pools, rolls }
@@ -263,6 +263,7 @@ describe('constant', () => {
 
 describe('basic dice', () => {
   describeBasicDie(1, 6)
+  describeBasicDie(0, 6)
   describeBasicDie(2, 8, 500)
   describeBasicDie(20, 1)
 })
