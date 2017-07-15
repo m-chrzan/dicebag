@@ -1,7 +1,7 @@
 {
-  "name": "dice",
+  "name": "dicebag",
   "version": "0.0.1",
-  "description": "Dice expression parser and evaluator",
+  "description": "Dice expression parser and roller",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/m-chrzan/dice.js.git"
+    "url": "git+https://github.com/m-chrzan/dicebag.git"
   },
   "author": "Marcin Chrzanowski",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/m-chrzan/dice.js/issues"
+    "url": "https://github.com/m-chrzan/dicebag/issues"
   },
-  "homepage": "https://github.com/m-chrzan/dice.js#readme",
+  "homepage": "https://github.com/m-chrzan/dicebag#readme",
   "devDependencies": {
     "eslint": "^4.2.0",
     "jest": "^20.0.4"

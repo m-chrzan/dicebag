@@ -1,1 +1,3 @@
-# dice.js
+# dicebag
+
+A dice expression parser and roller.
