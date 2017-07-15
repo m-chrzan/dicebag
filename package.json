@@ -2,6 +2,7 @@
   "name": "dicebag",
   "version": "0.0.1",
   "description": "Dice expression parser and roller",
+  "keywords": [ "dice", "random", "rpg", "tabletop", "roll", "roller" ],
   "main": "index.js",
   "scripts": {
     "test": "jest",
