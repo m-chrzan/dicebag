@@ -8,8 +8,7 @@ describe('parse', () => {
     })
 
     it('throws when two binary operations follow each other', () => {
-      expect(() => { parse('1dd2') }).toThrow(/Syntax error/)
-      expect(() => { parse('1+d2') }).toThrow(/Syntax error/)
+      expect(() => { parse('1++2') }).toThrow(/Syntax error/)
     })
 
     it('throws when two dice not combined with a binary operation', () => {
@@ -20,6 +19,14 @@ describe('parse', () => {
 
   it('parses a constant', () => {
     expect(parse('5')).toEqual({ type: 'constant', value: 5 })
+  })
+
+  it('parses a simple die with no left side', () => {
+    expect(parse('d6')).toEqual({
+      type: 'd',
+      left: { type: 'constant', value: 1 },
+      right: { type: 'constant', value: 6 }
+    })
   })
 
   it('parses a simple die (1d6)', () => {
@@ -59,17 +66,17 @@ describe('parse', () => {
   })
 
   it('parses dice addition', () => {
-    expect(parse('1d6 + 2d8')).toEqual({
+    expect(parse('2d8 + d6')).toEqual({
       type: 'add',
       left: {
         type: 'd',
-        left: { type: 'constant', value: 1 },
-        right: { type: 'constant', value: 6 }
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 8 }
       },
       right: {
         type: 'd',
-        left: { type: 'constant', value: 2 },
-        right: { type: 'constant', value: 8 }
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 6 }
       }
     })
   })

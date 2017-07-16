@@ -33,7 +33,13 @@ newSymbol('(', function(parser) {
 
 newSymbol(')')
 
-newSymbol('d', null, 30, (left, parser) => {
+newSymbol('d', (parser) => {
+  return {
+    type: 'd',
+    left: { type: 'constant', value: 1 },
+    right: parser.expression(29)
+  }
+}, 30, (left, parser) => {
   return {
     type: 'd',
     left: left,
