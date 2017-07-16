@@ -8,6 +8,9 @@
     "test": "jest",
     "lint": "eslint ."
   },
+  "bin": {
+    "dicebag": "./bin/dicebag.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/m-chrzan/dicebag.git"

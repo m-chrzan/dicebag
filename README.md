@@ -4,9 +4,30 @@ A dice expression parser and roller.
 
 ## Installation
 
+    # in a local node_modules/
     npm install --save dicebag
+    # globally, to use the CLI
+    npm install -g dicebag
 
-## Usage
+## Command-line usage
+
+    dicebag [-p] [<dice expression>]
+
+If a dice expression is provided, prints the result of rolling those dice and
+exits. Otherwise, reads expressions from `stdin` in a loop.
+
+* `-p` print dice pools (default behavior is to print the dice's sum)
+
+### Examples
+
+    $ dicebag 1d6
+    1
+    $ dicebag "2d8 + 1d4"
+    7
+    $ dicebag -p "2d8 + 1d4"
+    [ 5, 3, 4 ]
+
+## Library usage
 
     const { parse, pool, roll } = require('dicebag')
 
