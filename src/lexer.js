@@ -43,7 +43,7 @@ const lex = (expressionString) => {
     })
 
     if (!matched) {
-      return 'error'
+      throw new Error('Syntax error: unrecognized token')
     }
   }
 

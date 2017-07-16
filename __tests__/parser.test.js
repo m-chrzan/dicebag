@@ -1,6 +1,23 @@
 const { parse } = require('../src/parser.js')
 
 describe('parse', () => {
+  describe('error handling', () => {
+    it('throws when a binary operation lacks an argument', () => {
+      expect(() => { parse('1d') }).toThrow(/Syntax error/)
+      expect(() => { parse('2+3+') }).toThrow(/Syntax error/)
+    })
+
+    it('throws when two binary operations follow each other', () => {
+      expect(() => { parse('1dd2') }).toThrow(/Syntax error/)
+      expect(() => { parse('1+d2') }).toThrow(/Syntax error/)
+    })
+
+    it('throws when two dice not combined with a binary operation', () => {
+      expect(() => { parse('(1d4)(1d6)') }).toThrow(/Syntax error/)
+      expect(() => { parse('1 2') }).toThrow(/Syntax error/)
+    })
+  })
+
   it('parses a constant', () => {
     expect(parse('5')).toEqual({ type: 'constant', value: 5 })
   })

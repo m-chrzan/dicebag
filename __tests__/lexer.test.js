@@ -5,8 +5,16 @@ describe('lex', () => {
     expect(lex('')).toEqual([])
   })
 
-  it('signals an error on unexpected input', () => {
-    expect(lex('q')).toBe('error')
+  it('throws on unexpected input', () => {
+    expect(() => { lex('q') }).toThrow(/Syntax error/)
+  })
+
+  it('throws on unexpected input at the end', () => {
+    expect(() => { lex('1d6 `') }).toThrow(/Syntax error/)
+  })
+
+  it('throws on unexpected input in the middle', () => {
+    expect(() => { lex('2d3 + b 3d4') }).toThrow(/Syntax error/)
   })
 
   describe('ignores whitespace', () => {

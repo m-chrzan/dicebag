@@ -2,8 +2,17 @@ const { lex } = require('./lexer.js')
 
 let symbols = {}
 
+let throwSyntaxError = () => {
+  throw new Error('Syntax error: unexpected token')
+}
+
 let newSymbol = (type, nud, lbp, led) => {
-  symbols[type] = { type, nud, lbp, led }
+  symbols[type] = {
+    type,
+    nud: nud || throwSyntaxError,
+    lbp,
+    led: led || throwSyntaxError
+  }
 }
 
 let lexemeToToken = lexeme => {
@@ -65,7 +74,7 @@ const newParser = (tokens) => {
       if (this.token().type === token) {
         this.advanceToken()
       } else {
-        throw 'error'
+        throw throwSyntaxError()
       }
     },
     expression: function(rbp) {
@@ -89,7 +98,10 @@ const parse = expressionString => {
   tokens.push(symbols.end)
 
   const parser = newParser(tokens)
-  return parser.expression(0)
+  const expression = parser.expression(0)
+  parser.match('end')
+
+  return expression
 }
 
 
