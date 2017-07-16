@@ -14,19 +14,18 @@ The API consists of three functions:
 
 * `parse(diceExpression)` parses an expression into an object understood by the
   other two functions.
-* `pool(dice)` rolls each die in the `dice` object, returning an array of
-  results.
+* `pool(dice)` rolls the dice and returns an array of their results.
 * `roll(dice)` rolls the dice and returns their sum.
 
 ### Examples
 
     const d6 = parse('1d6')
-    roll(d6)   # 4
-    roll(d6)   # 5
-    pool(d6)   # [ 2 ]
+    roll(d6)   // 4
+    roll(d6)   // 5
+    pool(d6)   // [ 2 ]
     const dice = parse('2d6 + 1d8')
-    roll(dice) # 10
-    pool(dice) # [ 1, 4, 7 ]
+    roll(dice) // 10
+    pool(dice) // [ 1, 4, 7 ]
 
 ## Dice expressions
 
@@ -58,7 +57,7 @@ ignored):
 
 Semantics are defined in terms of the `pool` function.
 
-* `N`, where an `N` is an integer, is a die that always rolls a single value
+* `N`, where `N` is an integer, is a die that always rolls a single value
   equal to `N`. `pool` returns an array containing just `N`.
 * `DdE`, where `D` and `E` are dice expressions, is a die that rolls a number of
   dice equal to the result of rolling `D`, where each die has a number of sides
@@ -74,6 +73,6 @@ Additionally:
 
 * The binary arithmetic operations (`+`, `-`) are left associative.
 * The die operation `d` is right associative (`1d2d3` is equivalent to
-  1d(2d3)`, use explicit parentheses if you need `(1d2)d3`)
+  `1d(2d3)`, use explicit parentheses if you need `(1d2)d3`)
 * `d` binds stronger than the binary arithmetic operations (`1d6+1d4` is
   equivalent to `(1d6) + (1d4)`).
