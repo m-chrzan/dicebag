@@ -1,4 +1,4 @@
-const { pool, constant, d, add, subtract } = require('../src/dice.js')
+const { pool, constant, d, add, subtract, negative } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
 const defaultError = 0.2
@@ -187,10 +187,14 @@ const combinedDiceTestSpecs = (dieSpecs) => {
   }
 }
 
-const describeBasicDie = (number, sides, numberRolls = defaultNumberRolls) => {
+const describeBasicDie = (number, sides, numberRolls = defaultNumberRolls,
+  neg = false) => {
   describe(`${number}d${sides}`, () => {
-    const die = d(constant(number), constant(sides))
-    testDie(die, basicDieTestSpecs(number, sides), numberRolls)
+    let die = d(constant(number), constant(sides))
+    if (neg) {
+      die = negative(die)
+    }
+    testDie(die, basicDieTestSpecs(number, sides, neg), numberRolls)
   })
 }
 
@@ -275,6 +279,12 @@ describe('add', () => {
     { number: 2, sides: 8 },
     { number: 1, sides: 1 }
   ])
+})
+
+describe('negative', () => {
+  describeBasicDie(1, 6, defaultNumberRolls, true)
+  describeBasicDie(0, 6, defaultNumberRolls, true)
+  describeBasicDie(2, 8, defaultNumberRolls, true)
 })
 
 describe('subtract', () => {
