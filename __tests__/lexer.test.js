@@ -124,4 +124,16 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('exploding dice', () => {
+    test('1E1d6', () => {
+      expect(lex('1E1d6')).toEqual([
+        { type: 'constant', value: 1 },
+        { type: 'E' },
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 6 }
+      ])
+    })
+  })
 })

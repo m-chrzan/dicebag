@@ -7,6 +7,8 @@ const interpret = tree => {
     return D.constant(tree.value)
   case 'd':
     return D.d(interpret(tree.left), interpret(tree.right))
+  case 'E':
+    return D.explode(interpret(tree.left), interpret(tree.right))
   case 'add':
     return D.add(interpret(tree.left), interpret(tree.right))
   case 'subtract':

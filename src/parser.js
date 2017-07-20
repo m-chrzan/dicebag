@@ -47,6 +47,14 @@ newSymbol('d', (parser) => {
   }
 })
 
+newSymbol('E', null, 30, (left, parser) => {
+  return {
+    type: 'E',
+    left: left,
+    right: parser.expression(29)
+  }
+})
+
 newSymbol('+', null, 20, (left, parser) => {
   return {
     type: 'add',

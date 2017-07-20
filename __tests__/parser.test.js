@@ -115,6 +115,18 @@ describe('parse', () => {
     })
   })
 
+  it('parses exploding dice', () => {
+    expect(parse('1E1d6')).toEqual({
+      type: 'E',
+      left: { type: 'constant', value: 1 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 6 }
+      }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({
