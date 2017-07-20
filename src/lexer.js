@@ -25,6 +25,7 @@ newLexemeType('-', '-')
 newLexemeType('(', '\\(')
 newLexemeType(')', '\\)')
 newLexemeType('E', 'E')
+newLexemeType('K', 'K')
 newSkippableLexeme('whitespace', '\\s+')
 
 const lex = (expressionString) => {

@@ -6,6 +6,8 @@ let throwSyntaxError = () => {
   throw new Error('Syntax error: unexpected token')
 }
 
+const dieBindingPower = 30
+
 let newSymbol = (type, nud, lbp, led) => {
   symbols[type] = {
     type,
@@ -33,6 +35,16 @@ newSymbol('(', function(parser) {
 
 newSymbol(')')
 
+const newDieOperation = (symbol, nud = null) => {
+  newSymbol(symbol, nud, dieBindingPower, (left, parser) => {
+    return {
+      type: symbol,
+      left: left,
+      right: parser.expression(dieBindingPower - 1)
+    }
+  })
+}
+
 newSymbol('d', (parser) => {
   return {
     type: 'd',
@@ -54,6 +66,8 @@ newSymbol('E', null, 30, (left, parser) => {
     right: parser.expression(29)
   }
 })
+
+newDieOperation('K')
 
 newSymbol('+', null, 20, (left, parser) => {
   return {

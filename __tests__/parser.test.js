@@ -127,6 +127,18 @@ describe('parse', () => {
     })
   })
 
+  it('parses dice with keep', () => {
+    expect(parse('1K2d20')).toEqual({
+      type: 'K',
+      left: { type: 'constant', value: 1 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 20 }
+      }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({

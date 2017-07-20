@@ -136,4 +136,16 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('keep', () => {
+    test('1K2d20', () => {
+      expect(lex('1K2d20')).toEqual([
+        { type: 'constant', value: 1 },
+        { type: 'K' },
+        { type: 'constant', value: 2 },
+        { type: 'd' },
+        { type: 'constant', value: 20 }
+      ])
+    })
+  })
 })
