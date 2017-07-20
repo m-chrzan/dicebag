@@ -6,21 +6,38 @@ let throwSyntaxError = () => {
   throw new Error('Syntax error: unexpected token')
 }
 
-const dieBindingPower = 30
-
-let newSymbol = (type, nud, lbp, led) => {
-  symbols[type] = {
-    type,
-    nud: nud || throwSyntaxError,
-    lbp,
-    led: led || throwSyntaxError
-  }
-}
-
 let lexemeToToken = lexeme => {
   let token = Object.create(symbols[lexeme.type])
   token.value = lexeme.value
   return token
+}
+
+const dieBindingPower = 30
+
+let newSymbol = (type, nud, lbp, led) => {
+  const symbol = symbols[type] || {}
+  symbols[type] = {
+    type,
+    nud: nud || symbol.nud || throwSyntaxError,
+    lbp: symbol.lbp || lbp,
+    led: led || symbol.led || throwSyntaxError
+  }
+}
+
+const newInfix = (symbol, lbp, options) => {
+  const type = options.type || symbol
+  const rbp = options.rbp || lbp
+  newSymbol(symbol, null, lbp, (left, parser) => {
+    return {
+      type: type,
+      left: left,
+      right: parser.expression(rbp)
+    }
+  })
+}
+
+const newDieOperation = (symbol) => {
+  newInfix(symbol, dieBindingPower, { rbp: dieBindingPower - 1 })
 }
 
 newSymbol('constant', function() {
@@ -35,58 +52,23 @@ newSymbol('(', function(parser) {
 
 newSymbol(')')
 
-const newDieOperation = (symbol, nud = null) => {
-  newSymbol(symbol, nud, dieBindingPower, (left, parser) => {
-    return {
-      type: symbol,
-      left: left,
-      right: parser.expression(dieBindingPower - 1)
-    }
-  })
-}
-
+newDieOperation('d')
 newSymbol('d', (parser) => {
   return {
     type: 'd',
     left: { type: 'constant', value: 1 },
     right: parser.expression(29)
   }
-}, 30, (left, parser) => {
-  return {
-    type: 'd',
-    left: left,
-    right: parser.expression(29)
-  }
 })
-
-newSymbol('E', null, 30, (left, parser) => {
-  return {
-    type: 'E',
-    left: left,
-    right: parser.expression(29)
-  }
-})
-
+newDieOperation('E')
 newDieOperation('K')
 
-newSymbol('+', null, 20, (left, parser) => {
-  return {
-    type: 'add',
-    left: left,
-    right: parser.expression(20)
-  }
-})
-
+newInfix('+', 20, { type: 'add' })
+newInfix('-', 20, { type: 'subtract' })
 newSymbol('-', (parser) => {
   return {
     type: 'negative',
     value: parser.expression(40)
-  }
-}, 20, (left, parser) => {
-  return {
-    type: 'subtract',
-    left: left,
-    right: parser.expression(20)
   }
 })
 
@@ -131,6 +113,5 @@ const parse = expressionString => {
 
   return expression
 }
-
 
 exports.parse = parse
