@@ -43,7 +43,16 @@ const subtract = (die1, die2) => {
 
 const explode = (die1, die2) => {
   return () => {
-    return die1()
+    const explodeOn = roll(die1)
+    return die2().map(die => () => {
+      let lastRoll = die()
+      let total = lastRoll
+      while (lastRoll >= explodeOn) {
+        lastRoll = die()
+        total += lastRoll
+      }
+      return total
+    })
   }
 }
 
