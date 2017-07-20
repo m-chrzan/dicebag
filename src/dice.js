@@ -56,6 +56,25 @@ const explode = (die1, die2) => {
   }
 }
 
+const keepHigh = (die1, die2) => {
+  return () => {
+    const numberToKeep = roll(die1)
+    let rolls = die2().map(die => [die, die()])
+    rolls.sort((a, b) => (a[1] - b[1])).reverse()
+    return rolls.slice(0, numberToKeep).map(pair => {
+      let returnedOriginal = false
+      return () => {
+        if (!returnedOriginal) {
+          returnedOriginal = true
+          return pair[1]
+        } else {
+          return pair[0]()
+        }
+      }
+    })
+  }
+}
+
 exports.pool = pool
 exports.roll = roll
 exports.constant = constant
@@ -64,3 +83,4 @@ exports.add = add
 exports.subtract = subtract
 exports.negative = negative
 exports.explode = explode
+exports.keepHigh = keepHigh

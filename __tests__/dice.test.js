@@ -5,7 +5,8 @@ const {
   add,
   subtract,
   negative,
-  explode
+  explode,
+  keepHigh
 } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
@@ -376,5 +377,32 @@ describe('exploding dice', () => {
         high: Infinity
       }
     })
+  })
+})
+
+describe('keep', () => {
+  describe('1K2d20', () => {
+    const die = keepHigh(constant(1), d(constant(2), constant(20)))
+
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 13.825
+      },
+      variance: {
+        variance: 22.104
+      },
+      bounds: {
+        low: 1,
+        high: 20,
+        expectLow: true,
+        expectHigh: true
+      }
+    }, 800)
+  })
+
+  describe('2K1d20', () => {
+    const die = keepHigh(constant(2), d(constant(1), constant(20)))
+    testDie(die, basicDieTestSpecs(1, 20))
   })
 })
