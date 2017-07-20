@@ -1,7 +1,7 @@
-const constant = n => () => [n]
+const constant = n => () => [() => n]
 
 const pool = (die) => {
-  return die()
+  return die().map((d) => d())
 }
 
 const roll = (die) => {
@@ -16,7 +16,7 @@ const d = (number, sides) => {
     const currentSides = roll(sides)
 
     for (let i = 0; i < currentNumber; i++) {
-      pool.push(1 + Math.floor(Math.random() * currentSides))
+      pool.push(() => (1 + Math.floor(Math.random() * currentSides)))
     }
 
     return pool
@@ -31,7 +31,7 @@ const add = (die1, die2) => {
 
 const negative = (die) => {
   return () => {
-    return die().map(value => -value)
+    return die().map(die => () => (-die()))
   }
 }
 
