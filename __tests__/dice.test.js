@@ -1,4 +1,12 @@
-const { pool, constant, d, add, subtract, negative } = require('../src/dice.js')
+const {
+  pool,
+  constant,
+  d,
+  add,
+  subtract,
+  negative,
+  explode
+} = require('../src/dice.js')
 
 const defaultNumberRolls = 500
 const defaultError = 0.2
@@ -330,5 +338,43 @@ describe('compound dice', () => {
     const die = d(d(constant(2), constant(1)), d(constant(2), constant(1)))
 
     testDie(die, basicDieTestSpecs(2, 2))
+  })
+})
+
+describe('exploding dice', () => {
+  describe('6E1d6', () => {
+    const die = explode(constant(6), d(constant(1), constant(6)))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 4.2
+      },
+      variance: {
+        variance: 10.64
+      },
+      bounds: {
+        low: 1,
+        expectLow: true,
+        high: Infinity
+      }
+    })
+  })
+
+  describe('6E2d6', () => {
+    const die = explode(constant(6), d(constant(2), constant(6)))
+    testDie(die, {
+      diceCount: 2,
+      average: {
+        average: 2 * 4.2
+      },
+      variance: {
+        variance: 2 * 10.64
+      },
+      bounds: {
+        low: 2,
+        expectLow: true,
+        high: Infinity
+      }
+    })
   })
 })

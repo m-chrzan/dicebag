@@ -41,6 +41,12 @@ const subtract = (die1, die2) => {
   }
 }
 
+const explode = (die1, die2) => {
+  return () => {
+    return die1()
+  }
+}
+
 exports.pool = pool
 exports.roll = roll
 exports.constant = constant
@@ -48,3 +54,4 @@ exports.d = d
 exports.add = add
 exports.subtract = subtract
 exports.negative = negative
+exports.explode = explode
