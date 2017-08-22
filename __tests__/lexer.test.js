@@ -10,24 +10,24 @@ describe('lex', () => {
   })
 
   it('throws on unexpected input at the end', () => {
-    expect(() => { lex('1d6 `') }).toThrow(/Syntax error/)
+    expect(() => { lex('1d6`') }).toThrow(/Syntax error/)
   })
 
   it('throws on unexpected input in the middle', () => {
-    expect(() => { lex('2d3 + b 3d4') }).toThrow(/Syntax error/)
+    expect(() => { lex('2d3 + b3d4') }).toThrow(/Syntax error/)
   })
 
-  describe('ignores whitespace', () => {
+  describe('throws on unexpected whitespace', () => {
     it('2 d 4', () => {
-      expect(lex('2 d 4')).not.toBe('error')
+      expect(() => { lex('2 d 4') }).toThrow(/Syntax error/)
     })
 
     it('   1d8', () => {
-      expect(lex('   1d8')).not.toBe('error')
+      expect(() => { lex('   1d8') }).toThrow(/Syntax error/)
     })
 
     it('3d4   ', () => {
-      expect(lex('3d4   ')).not.toBe('error')
+      expect(() => { lex('3d4   ') }).toThrow(/Syntax error/)
     })
   })
 
