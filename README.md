@@ -119,7 +119,9 @@ Semantics are defined in terms of the `pool` function.
 Additionally:
 
 * The binary arithmetic operations (` + `, ` - `) are left associative.
+* The bonus operations (`+`, `-`) are left associative. They bind stronger than
+  arithmetic operations.
 * The die operations (`d`, `E`, `K`, `k`) are right associative (`1d2d3` is
   equivalent to `1d(2d3)`, use explicit parentheses if you need `(1d2)d3`).
-* Die operations bind stronger than the binary arithmetic operations (`1d6+1d4`
-  is equivalent to `(1d6) + (1d4)`).
+* Die operations bind stronger than the binary arithmetic operations
+  (`1d6 + 1d4` is equivalent to `(1d6) + (1d4)`) and the bonus operations.
