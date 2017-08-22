@@ -10,24 +10,24 @@ describe('lex', () => {
   })
 
   it('throws on unexpected input at the end', () => {
-    expect(() => { lex('1d6 `') }).toThrow(/Syntax error/)
+    expect(() => { lex('1d6`') }).toThrow(/Syntax error/)
   })
 
   it('throws on unexpected input in the middle', () => {
-    expect(() => { lex('2d3 + b 3d4') }).toThrow(/Syntax error/)
+    expect(() => { lex('2d3 + b3d4') }).toThrow(/Syntax error/)
   })
 
-  describe('ignores whitespace', () => {
+  describe('throws on unexpected whitespace', () => {
     it('2 d 4', () => {
-      expect(lex('2 d 4')).not.toBe('error')
+      expect(() => { lex('2 d 4') }).toThrow(/Syntax error/)
     })
 
     it('   1d8', () => {
-      expect(lex('   1d8')).not.toBe('error')
+      expect(() => { lex('   1d8') }).toThrow(/Syntax error/)
     })
 
     it('3d4   ', () => {
-      expect(lex('3d4   ')).not.toBe('error')
+      expect(() => { lex('3d4   ') }).toThrow(/Syntax error/)
     })
   })
 
@@ -55,7 +55,7 @@ describe('lex', () => {
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 6 },
-        { type: '+' },
+        { type: 'bigPlus' },
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 4 }
@@ -67,7 +67,7 @@ describe('lex', () => {
         { type: 'constant', value: 2 },
         { type: 'd' },
         { type: 'constant', value: 17 },
-        { type: '+' },
+        { type: 'bigPlus' },
         { type: 'constant', value: 4 }
       ])
     })
@@ -79,7 +79,7 @@ describe('lex', () => {
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 6 },
-        { type: '-' },
+        { type: 'bigMinus' },
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 4 }
@@ -91,7 +91,7 @@ describe('lex', () => {
         { type: 'constant', value: 2 },
         { type: 'd' },
         { type: 'constant', value: 17 },
-        { type: '-' },
+        { type: 'bigMinus' },
         { type: 'constant', value: 4 }
       ])
     })
@@ -110,17 +110,30 @@ describe('lex', () => {
       ])
     })
 
-    it('2d(6+3)d4', () => {
-      expect(lex('2d(6+3)d4')).toEqual([
+    it('2d(6 + 3)d4', () => {
+      expect(lex('2d(6 + 3)d4')).toEqual([
         { type: 'constant', value: 2 },
         { type: 'd' },
         { type: '(' },
         { type: 'constant', value: 6 },
-        { type: '+' },
+        { type: 'bigPlus' },
         { type: 'constant', value: 3 },
         { type: ')' },
         { type: 'd' },
         { type: 'constant', value: 4 }
+      ])
+    })
+  })
+
+  describe('lexes negatives', () => {
+    it('-(1d6)', () => {
+      expect(lex('-(1d6)')).toEqual([
+        { type: 'minus' },
+        { type: '(' },
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 6 },
+        { type: ')' }
       ])
     })
   })

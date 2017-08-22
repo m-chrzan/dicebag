@@ -14,19 +14,15 @@ const newValueLexeme = (type, regex, converter = v => v) => {
   })
 }
 
-const newSkippableLexeme = (type, regex) => {
-  newLexemeType(type, regex, () => {})
-}
-
 newValueLexeme('constant', '\\d+', Number)
 newLexemeType('d', 'd')
-newLexemeType('+', '\\+')
-newLexemeType('-', '-')
+newLexemeType('bigPlus', ' \\+ ' )
+newLexemeType('bigMinus', ' - ')
+newLexemeType('minus', '-')
 newLexemeType('(', '\\(')
 newLexemeType(')', '\\)')
 newLexemeType('E', 'E')
 newLexemeType('K', 'K')
-newSkippableLexeme('whitespace', '\\s+')
 
 const lex = (expressionString) => {
   let lexemes = []

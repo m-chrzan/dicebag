@@ -152,8 +152,8 @@ describe('parse', () => {
       })
     })
 
-    test('2d(6+3)d4', () => {
-      expect(parse('2d(6+3)d4')).toEqual({
+    test('2d(6 + 3)d4', () => {
+      expect(parse('2d(6 + 3)d4')).toEqual({
         type: 'd',
         left: { type: 'constant', value: 2 },
         right: {
