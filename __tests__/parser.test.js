@@ -127,9 +127,21 @@ describe('parse', () => {
     })
   })
 
-  it('parses dice with keep', () => {
+  it('parses dice with keep high', () => {
     expect(parse('1K2d20')).toEqual({
       type: 'K',
+      left: { type: 'constant', value: 1 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 20 }
+      }
+    })
+  })
+
+  it('parses dice with keep low', () => {
+    expect(parse('1k2d20')).toEqual({
+      type: 'k',
       left: { type: 'constant', value: 1 },
       right: {
         type: 'd',

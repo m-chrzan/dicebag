@@ -24,6 +24,7 @@ newLexemeType('(', '\\(')
 newLexemeType(')', '\\)')
 newLexemeType('E', 'E')
 newLexemeType('K', 'K')
+newLexemeType('k', 'k')
 
 const lex = (expressionString) => {
   let lexemes = []

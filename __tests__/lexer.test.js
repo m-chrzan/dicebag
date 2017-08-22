@@ -160,6 +160,15 @@ describe('lex', () => {
         { type: 'constant', value: 20 }
       ])
     })
+    test('1k2d20', () => {
+      expect(lex('1k2d20')).toEqual([
+        { type: 'constant', value: 1 },
+        { type: 'k' },
+        { type: 'constant', value: 2 },
+        { type: 'd' },
+        { type: 'constant', value: 20 }
+      ])
+    })
   })
 
   describe('bonusAdd', () => {
