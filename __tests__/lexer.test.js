@@ -125,6 +125,19 @@ describe('lex', () => {
     })
   })
 
+  describe('lexes negatives', () => {
+    it('-(1d6)', () => {
+      expect(lex('-(1d6)')).toEqual([
+        { type: 'minus' },
+        { type: '(' },
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 6 },
+        { type: ')' }
+      ])
+    })
+  })
+
   describe('exploding dice', () => {
     test('1E1d6', () => {
       expect(lex('1E1d6')).toEqual([
