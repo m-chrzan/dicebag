@@ -75,6 +75,25 @@ const keepHigh = (die1, die2) => {
   }
 }
 
+const keepLow = (die1, die2) => {
+  return () => {
+    const numberToKeep = roll(die1)
+    let rolls = die2().map(die => [die, die()])
+    rolls.sort((a, b) => (a[1] - b[1]))
+    return rolls.slice(0, numberToKeep).map(pair => {
+      let returnedOriginal = false
+      return () => {
+        if (!returnedOriginal) {
+          returnedOriginal = true
+          return pair[1]
+        } else {
+          return pair[0]()
+        }
+      }
+    })
+  }
+}
+
 const bonusAdd = (die1, die2) => {
   return () => {
     return die1().map(die => {
@@ -92,4 +111,5 @@ exports.subtract = subtract
 exports.negative = negative
 exports.explode = explode
 exports.keepHigh = keepHigh
+exports.keepLow = keepLow
 exports.bonusAdd = bonusAdd
