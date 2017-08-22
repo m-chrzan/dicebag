@@ -64,6 +64,7 @@ newDieOperation('E')
 newDieOperation('K')
 
 newInfix('bigPlus', 20, { type: 'add' })
+newInfix('plus', 20, { type: 'bonusAdd' })
 newInfix('bigMinus', 20, { type: 'subtract' })
 newSymbol('minus', (parser) => {
   return {

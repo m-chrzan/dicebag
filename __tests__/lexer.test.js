@@ -161,4 +161,16 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('bonusAdd', () => {
+    test('3d4+1', () => {
+      expect(lex('3d4+1')).toEqual([
+        { type: 'constant', value: 3 },
+        { type: 'd' },
+        { type: 'constant', value: 4 },
+        { type: 'plus' },
+        { type: 'constant', value: 1 }
+      ])
+    })
+  })
 })
