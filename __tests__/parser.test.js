@@ -175,6 +175,30 @@ describe('parse', () => {
     })
   })
 
+  test('bonus binds stronger than addition', () => {
+    expect(parse('2d6 + 2d6+2d6')).toEqual({
+      type: 'add',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 6 }
+      },
+      right: {
+        type: 'bonusAdd',
+        left: {
+          type: 'd',
+          left: { type: 'constant', value: 2 },
+          right: { type: 'constant', value: 6 }
+        },
+        right: {
+          type: 'd',
+          left: { type: 'constant', value: 2 },
+          right: { type: 'constant', value: 6 }
+        }
+      }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({
