@@ -6,7 +6,8 @@ const {
   subtract,
   negative,
   explode,
-  keepHigh
+  keepHigh,
+  bonusAdd
 } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
@@ -404,5 +405,65 @@ describe('keep', () => {
   describe('2K1d20', () => {
     const die = keepHigh(constant(2), d(constant(1), constant(20)))
     testDie(die, basicDieTestSpecs(1, 20))
+  })
+})
+
+describe('bonusAdd', () => {
+  describe('1d20+3', () => {
+    const die = bonusAdd(d(constant(1), constant(20)), constant(3))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 13.5
+      },
+      variance: {
+        variance: 33.25
+      },
+      bounds: {
+        low: 4,
+        high: 23,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+
+  describe('3d4+1', () => {
+    const die = bonusAdd(d(constant(3), constant(4)), constant(1))
+    testDie(die, {
+      diceCount: 3,
+      average: {
+        average: 10.5
+      },
+      variance: {
+        variance: 3.75
+      },
+      bounds: {
+        low: 6,
+        high: 15,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+
+  describe('2d6+1d6', () => {
+    const die = bonusAdd(d(constant(2), constant(6)),
+      d(constant(1), constant(6)))
+    testDie(die, {
+      diceCount: 2,
+      average: {
+        average: 14
+      },
+      variance: {
+        variance: 11.67
+      },
+      bounds: {
+        low: 4,
+        high: 24,
+        expectLow: false,
+        expectHigh: false
+      }
+    })
   })
 })

@@ -75,6 +75,14 @@ const keepHigh = (die1, die2) => {
   }
 }
 
+const bonusAdd = (die1, die2) => {
+  return () => {
+    return die1().map(die => {
+      return () => die() + roll(die2)
+    })
+  }
+}
+
 exports.pool = pool
 exports.roll = roll
 exports.constant = constant
@@ -84,3 +92,4 @@ exports.subtract = subtract
 exports.negative = negative
 exports.explode = explode
 exports.keepHigh = keepHigh
+exports.bonusAdd = bonusAdd
