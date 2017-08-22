@@ -8,7 +8,8 @@ const {
   explode,
   keepHigh,
   keepLow,
-  bonusAdd
+  bonusAdd,
+  bonusSubtract
 } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
@@ -489,6 +490,46 @@ describe('bonusAdd', () => {
         high: 24,
         expectLow: false,
         expectHigh: false
+      }
+    })
+  })
+})
+
+describe('bonusSubtract', () => {
+  describe('1d20-3', () => {
+    const die = bonusSubtract(d(constant(1), constant(20)), constant(3))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 7.5
+      },
+      variance: {
+        variance: 33.25
+      },
+      bounds: {
+        low: -2,
+        high: 17,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+
+  describe('3d4-1', () => {
+    const die = bonusSubtract(d(constant(3), constant(4)), constant(1))
+    testDie(die, {
+      diceCount: 3,
+      average: {
+        average: 4.5
+      },
+      variance: {
+        variance: 3.75
+      },
+      bounds: {
+        low: 0,
+        high: 9,
+        expectLow: true,
+        expectHigh: true
       }
     })
   })

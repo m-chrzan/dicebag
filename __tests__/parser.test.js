@@ -163,6 +163,18 @@ describe('parse', () => {
     })
   })
 
+  it('parses negative bonuses', () => {
+    expect(parse('3d4-1')).toEqual({
+      type: 'bonusSubtract',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 3 },
+        right: { type: 'constant', value: 4 }
+      },
+      right: { type: 'constant', value: 1 }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({
