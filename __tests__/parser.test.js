@@ -97,6 +97,54 @@ describe('parse', () => {
     })
   })
 
+  it('parses additive bonuses', () => {
+    expect(parse('3d4+1')).toEqual({
+      type: 'bonusAdd',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 3 },
+        right: { type: 'constant', value: 4 }
+      },
+      right: { type: 'constant', value: 1 }
+    })
+  })
+
+  it('parses negative bonuses', () => {
+    expect(parse('3d4-1')).toEqual({
+      type: 'bonusSubtract',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 3 },
+        right: { type: 'constant', value: 4 }
+      },
+      right: { type: 'constant', value: 1 }
+    })
+  })
+
+  test('bonus binds stronger than addition', () => {
+    expect(parse('2d6 + 2d6+2d6')).toEqual({
+      type: 'add',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 6 }
+      },
+      right: {
+        type: 'bonusAdd',
+        left: {
+          type: 'd',
+          left: { type: 'constant', value: 2 },
+          right: { type: 'constant', value: 6 }
+        },
+        right: {
+          type: 'd',
+          left: { type: 'constant', value: 2 },
+          right: { type: 'constant', value: 6 }
+        }
+      }
+    })
+  })
+
   it('parses negatives', () => {
     expect(parse('-1 + (-(2d6))')).toEqual({
       type: 'add',
@@ -147,54 +195,6 @@ describe('parse', () => {
         type: 'd',
         left: { type: 'constant', value: 2 },
         right: { type: 'constant', value: 20 }
-      }
-    })
-  })
-
-  it('parses additive bonuses', () => {
-    expect(parse('3d4+1')).toEqual({
-      type: 'bonusAdd',
-      left: {
-        type: 'd',
-        left: { type: 'constant', value: 3 },
-        right: { type: 'constant', value: 4 }
-      },
-      right: { type: 'constant', value: 1 }
-    })
-  })
-
-  it('parses negative bonuses', () => {
-    expect(parse('3d4-1')).toEqual({
-      type: 'bonusSubtract',
-      left: {
-        type: 'd',
-        left: { type: 'constant', value: 3 },
-        right: { type: 'constant', value: 4 }
-      },
-      right: { type: 'constant', value: 1 }
-    })
-  })
-
-  test('bonus binds stronger than addition', () => {
-    expect(parse('2d6 + 2d6+2d6')).toEqual({
-      type: 'add',
-      left: {
-        type: 'd',
-        left: { type: 'constant', value: 2 },
-        right: { type: 'constant', value: 6 }
-      },
-      right: {
-        type: 'bonusAdd',
-        left: {
-          type: 'd',
-          left: { type: 'constant', value: 2 },
-          right: { type: 'constant', value: 6 }
-        },
-        right: {
-          type: 'd',
-          left: { type: 'constant', value: 2 },
-          right: { type: 'constant', value: 6 }
-        }
       }
     })
   })

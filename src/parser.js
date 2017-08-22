@@ -57,7 +57,7 @@ newSymbol('d', (parser) => {
   return {
     type: 'd',
     left: { type: 'constant', value: 1 },
-    right: parser.expression(29)
+    right: parser.expression(dieBindingPower - 1)
   }
 })
 newDieOperation('E')
@@ -65,9 +65,9 @@ newDieOperation('K')
 newDieOperation('k')
 
 newInfix('bigPlus', 20, { type: 'add' })
+newInfix('bigMinus', 20, { type: 'subtract' })
 newInfix('plus', 25, { type: 'bonusAdd' })
 newInfix('minus', 25, { type: 'bonusSubtract' })
-newInfix('bigMinus', 20, { type: 'subtract' })
 newSymbol('minus', (parser) => {
   return {
     type: 'negative',
