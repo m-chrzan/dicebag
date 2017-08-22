@@ -20,8 +20,9 @@ const newSkippableLexeme = (type, regex) => {
 
 newValueLexeme('constant', '\\d+', Number)
 newLexemeType('d', 'd')
-newLexemeType('+', '\\+')
-newLexemeType('-', '-')
+newLexemeType('bigPlus', ' \\+ ' )
+newLexemeType('bigMinus', ' - ')
+newLexemeType('minus', '-')
 newLexemeType('(', '\\(')
 newLexemeType(')', '\\)')
 newLexemeType('E', 'E')

@@ -63,9 +63,9 @@ newSymbol('d', (parser) => {
 newDieOperation('E')
 newDieOperation('K')
 
-newInfix('+', 20, { type: 'add' })
-newInfix('-', 20, { type: 'subtract' })
-newSymbol('-', (parser) => {
+newInfix('bigPlus', 20, { type: 'add' })
+newInfix('bigMinus', 20, { type: 'subtract' })
+newSymbol('minus', (parser) => {
   return {
     type: 'negative',
     value: parser.expression(40)

@@ -55,7 +55,7 @@ describe('lex', () => {
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 6 },
-        { type: '+' },
+        { type: 'bigPlus' },
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 4 }
@@ -67,7 +67,7 @@ describe('lex', () => {
         { type: 'constant', value: 2 },
         { type: 'd' },
         { type: 'constant', value: 17 },
-        { type: '+' },
+        { type: 'bigPlus' },
         { type: 'constant', value: 4 }
       ])
     })
@@ -79,7 +79,7 @@ describe('lex', () => {
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 6 },
-        { type: '-' },
+        { type: 'bigMinus' },
         { type: 'constant', value: 1 },
         { type: 'd' },
         { type: 'constant', value: 4 }
@@ -91,7 +91,7 @@ describe('lex', () => {
         { type: 'constant', value: 2 },
         { type: 'd' },
         { type: 'constant', value: 17 },
-        { type: '-' },
+        { type: 'bigMinus' },
         { type: 'constant', value: 4 }
       ])
     })
@@ -110,13 +110,13 @@ describe('lex', () => {
       ])
     })
 
-    it('2d(6+3)d4', () => {
-      expect(lex('2d(6+3)d4')).toEqual([
+    it('2d(6 + 3)d4', () => {
+      expect(lex('2d(6 + 3)d4')).toEqual([
         { type: 'constant', value: 2 },
         { type: 'd' },
         { type: '(' },
         { type: 'constant', value: 6 },
-        { type: '+' },
+        { type: 'bigPlus' },
         { type: 'constant', value: 3 },
         { type: ')' },
         { type: 'd' },
