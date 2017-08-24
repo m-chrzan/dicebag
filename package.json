@@ -1,6 +1,6 @@
 {
   "name": "dicebag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dice expression parser and roller",
   "keywords": [
     "dice",
