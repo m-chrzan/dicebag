@@ -86,6 +86,7 @@ The parser recognizes the following grammar:
           | Die 'K' Die
           | Die 'k' Die
           | Die 'A' Die
+          | Die 'T' Die
 
 Semantics are defined in terms of the `pool` function.
 
@@ -121,6 +122,9 @@ Semantics are defined in terms of the `pool` function.
   something less than the value rolled on `D`. Each such roll is treated as a
   separate die, the results for each die are not accumulated like with exploding
   die.
+* `DTE` applies a threshold to the dice in `E`'s pool. First `D` is rolled. Now
+  when a die from `E`'s pool rolls below the value rolled on `D`, its value is
+  0, otherwise its value is 1.
 
 Additionally:
 
