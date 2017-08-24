@@ -9,7 +9,8 @@ const {
   negative,
   explode,
   keepHigh,
-  keepLow
+  keepLow,
+  again
 } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
@@ -532,5 +533,30 @@ describe('keep', () => {
   describe('2k1d20', () => {
     const die = keepLow(constant(2), d(constant(1), constant(20)))
     testDie(die, basicDieTestSpecs(1, 20))
+  })
+})
+
+describe('again', () => {
+  describe('10A1d10', () => {
+    const die = again(constant(10), d(constant(1), constant(10)))
+
+    testDie(die, {
+      variableDiceCount: {
+        min: 1,
+        max: Infinity
+      },
+      average: {
+        average: 6.11
+      },
+      variance: {
+        variance: 19.03
+      },
+      bounds: {
+        low: 1,
+        high: Infinity,
+        expectLow: true,
+        expectHigh: false
+      }
+    })
   })
 })

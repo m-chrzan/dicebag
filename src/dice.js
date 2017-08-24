@@ -111,6 +111,43 @@ const keepLow = (die1, die2) => {
   }
 }
 
+const again = (die1, die2) => {
+  return () => {
+    const againOn = roll(die1)
+    let rolls = []
+    let rollAgain = []
+
+    const rollDie = (die) => {
+      const roll = die()
+
+      if (roll >= againOn) {
+        rollAgain.push(die)
+      }
+
+      let returnedOriginal = false
+      rolls.push(() => {
+        if (!returnedOriginal) {
+          returnedOriginal = true
+          return roll
+        } else {
+          return die()
+        }
+      })
+    }
+
+    die2().forEach(rollDie)
+
+    while (rollAgain.length > 0) {
+      const oldRollAgain = rollAgain
+      rollAgain = []
+      oldRollAgain.forEach(rollDie)
+    }
+
+    return rolls
+  }
+}
+
+
 exports.pool = pool
 exports.roll = roll
 exports.constant = constant
@@ -123,3 +160,4 @@ exports.negative = negative
 exports.explode = explode
 exports.keepHigh = keepHigh
 exports.keepLow = keepLow
+exports.again = again
