@@ -13,6 +13,8 @@ const interpret = tree => {
     return D.keepHigh(interpret(tree.left), interpret(tree.right))
   case 'k':
     return D.keepLow(interpret(tree.left), interpret(tree.right))
+  case 'A':
+    return D.again(interpret(tree.left), interpret(tree.right))
   case 'add':
     return D.add(interpret(tree.left), interpret(tree.right))
   case 'subtract':

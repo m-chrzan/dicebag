@@ -182,4 +182,16 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('again', () => {
+    test('6A3d6', () => {
+      expect(lex('6A3d6')).toEqual([
+        { type: 'constant', value: 6 },
+        { type: 'A' },
+        { type: 'constant', value: 3 },
+        { type: 'd' },
+        { type: 'constant', value: 6 }
+      ])
+    })
+  })
 })
