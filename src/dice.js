@@ -147,6 +147,22 @@ const again = (die1, die2) => {
   }
 }
 
+const threshold = (die1, die2) => {
+  return () => {
+    const cutoff = roll(die1)
+
+    return die2().map(die => {
+      return () => {
+        if (die() >= cutoff) {
+          return 1
+        } else {
+          return 0
+        }
+      }
+    })
+  }
+}
+
 
 exports.pool = pool
 exports.roll = roll
@@ -161,3 +177,4 @@ exports.explode = explode
 exports.keepHigh = keepHigh
 exports.keepLow = keepLow
 exports.again = again
+exports.threshold = threshold

@@ -10,7 +10,8 @@ const {
   explode,
   keepHigh,
   keepLow,
-  again
+  again,
+  threshold
 } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
@@ -556,6 +557,28 @@ describe('again', () => {
         high: Infinity,
         expectLow: true,
         expectHigh: false
+      }
+    })
+  })
+})
+
+describe('threshold', () => {
+  describe('8T3d10', () => {
+    const die = threshold(constant(8), d(constant(3), constant(10)))
+
+    testDie(die, {
+      diceCount: 3,
+      average: {
+        average: 0.9
+      },
+      variance: {
+        variance: 0.63
+      },
+      bounds: {
+        low: 0,
+        high: 3,
+        expectLow: true,
+        expectHigh: true
       }
     })
   })
