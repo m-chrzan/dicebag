@@ -211,6 +211,18 @@ describe('parse', () => {
     })
   })
 
+  it('parases dice with threshold', () => {
+    expect(parse('7T4d8')).toEqual({
+      type: 'T',
+      left: { type: 'constant', value: 7 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 4 },
+        right: { type: 'constant', value: 8 }
+      }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({

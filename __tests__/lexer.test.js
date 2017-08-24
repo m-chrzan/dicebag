@@ -194,4 +194,16 @@ describe('lex', () => {
       ])
     })
   })
+
+  describe('threshold', () => {
+    test('8T3d10', () => {
+      expect(lex('8T3d10')).toEqual([
+        { type: 'constant', value: 8 },
+        { type: 'T' },
+        { type: 'constant', value: 3 },
+        { type: 'd' },
+        { type: 'constant', value: 10 }
+      ])
+    })
+  })
 })

@@ -64,6 +64,7 @@ newDieOperation('E')
 newDieOperation('K')
 newDieOperation('k')
 newDieOperation('A')
+newDieOperation('T')
 
 newInfix('bigPlus', 20, { type: 'add' })
 newInfix('bigMinus', 20, { type: 'subtract' })
