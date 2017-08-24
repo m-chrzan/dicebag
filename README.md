@@ -81,6 +81,7 @@ The parser recognizes the following grammar:
           | Die ' + ' Die
           | Die ' - ' Die
           | Die '+' Die
+          | Die '-' Die
           | '-' Die
           | Die 'E' Die
           | Die 'K' Die
