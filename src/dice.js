@@ -1,3 +1,6 @@
+const greaterThanOrEqual = (a, b) => a >= b
+const lessThanOrEqual = (a, b) => a <= b
+
 const constant = n => () => [() => n]
 
 const pool = (die) => {
@@ -58,13 +61,13 @@ const bonusSubtract = (die1, die2) => {
   }
 }
 
-const explode = (die1, die2) => {
+const explode = (comparison, die1, die2) => {
   return () => {
     const explodeOn = roll(die1)
     return die2().map(die => () => {
       let lastRoll = die()
       let total = lastRoll
-      while (lastRoll >= explodeOn) {
+      while (comparison(lastRoll, explodeOn)) {
         lastRoll = die()
         total += lastRoll
       }
@@ -73,60 +76,44 @@ const explode = (die1, die2) => {
   }
 }
 
+const explodeAbove = (die1, die2) => {
+  return explode(greaterThanOrEqual, die1, die2)
+}
+
 const explodeUnder = (die1, die2) => {
+  return explode(lessThanOrEqual, die1, die2)
+}
+
+
+
+const keep = (order, die1, die2) => {
   return () => {
-    const explodeOn = roll(die1)
-    return die2().map(die => () => {
-      let lastRoll = die()
-      let total = lastRoll
-      while (lastRoll <= explodeOn) {
-        lastRoll = die()
-        total += lastRoll
+    const numberToKeep = roll(die1)
+    let rolls = die2().map(die => [die, die()])
+    rolls.sort(order)
+    return rolls.slice(0, numberToKeep).map(pair => {
+      let returnedOriginal = false
+      return () => {
+        if (!returnedOriginal) {
+          returnedOriginal = true
+          return pair[1]
+        } else {
+          return pair[0]()
+        }
       }
-      return total
     })
   }
 }
 
 const keepHigh = (die1, die2) => {
-  return () => {
-    const numberToKeep = roll(die1)
-    let rolls = die2().map(die => [die, die()])
-    rolls.sort((a, b) => (a[1] - b[1])).reverse()
-    return rolls.slice(0, numberToKeep).map(pair => {
-      let returnedOriginal = false
-      return () => {
-        if (!returnedOriginal) {
-          returnedOriginal = true
-          return pair[1]
-        } else {
-          return pair[0]()
-        }
-      }
-    })
-  }
+  return keep((a, b) => (b[1] - a[1]), die1, die2)
 }
 
 const keepLow = (die1, die2) => {
-  return () => {
-    const numberToKeep = roll(die1)
-    let rolls = die2().map(die => [die, die()])
-    rolls.sort((a, b) => (a[1] - b[1]))
-    return rolls.slice(0, numberToKeep).map(pair => {
-      let returnedOriginal = false
-      return () => {
-        if (!returnedOriginal) {
-          returnedOriginal = true
-          return pair[1]
-        } else {
-          return pair[0]()
-        }
-      }
-    })
-  }
+  return keep((a, b) => (a[1] - b[1]), die1, die2)
 }
 
-const again = (die1, die2) => {
+const again = (comparison, die1, die2) => {
   return () => {
     const againOn = roll(die1)
     let rolls = []
@@ -135,7 +122,7 @@ const again = (die1, die2) => {
     const rollDie = (die) => {
       const roll = die()
 
-      if (roll >= againOn) {
+      if (comparison(roll, againOn)) {
         rollAgain.push(die)
       }
 
@@ -160,51 +147,23 @@ const again = (die1, die2) => {
 
     return rolls
   }
+}
+
+const againAbove = (die1, die2) => {
+  return again(greaterThanOrEqual, die1, die2)
 }
 
 const againUnder = (die1, die2) => {
-  return () => {
-    const againOn = roll(die1)
-    let rolls = []
-    let rollAgain = []
-
-    const rollDie = (die) => {
-      const roll = die()
-
-      if (roll <= againOn) {
-        rollAgain.push(die)
-      }
-
-      let returnedOriginal = false
-      rolls.push(() => {
-        if (!returnedOriginal) {
-          returnedOriginal = true
-          return roll
-        } else {
-          return die()
-        }
-      })
-    }
-
-    die2().forEach(rollDie)
-
-    while (rollAgain.length > 0) {
-      const oldRollAgain = rollAgain
-      rollAgain = []
-      oldRollAgain.forEach(rollDie)
-    }
-
-    return rolls
-  }
+  return again(lessThanOrEqual, die1, die2)
 }
 
-const threshold = (die1, die2) => {
+const threshold = (comparison, die1, die2) => {
   return () => {
     const cutoff = roll(die1)
 
     return die2().map(die => {
       return () => {
-        if (die() >= cutoff) {
+        if (comparison(die(), cutoff)) {
           return 1
         } else {
           return 0
@@ -212,22 +171,14 @@ const threshold = (die1, die2) => {
       }
     })
   }
+}
+
+const thresholdHigh = (die1, die2) => {
+  return threshold(greaterThanOrEqual, die1, die2)
 }
 
 const thresholdLow = (die1, die2) => {
-  return () => {
-    const cutoff = roll(die1)
-
-    return die2().map(die => {
-      return () => {
-        if (die() <= cutoff) {
-          return 1
-        } else {
-          return 0
-        }
-      }
-    })
-  }
+  return threshold(lessThanOrEqual, die1, die2)
 }
 
 exports.pool = pool
@@ -239,11 +190,11 @@ exports.subtract = subtract
 exports.bonusAdd = bonusAdd
 exports.bonusSubtract = bonusSubtract
 exports.negative = negative
-exports.explode = explode
+exports.explodeAbove = explodeAbove
 exports.explodeUnder = explodeUnder
 exports.keepHigh = keepHigh
 exports.keepLow = keepLow
-exports.again = again
+exports.againAbove = againAbove
 exports.againUnder = againUnder
-exports.threshold = threshold
+exports.thresholdHigh = thresholdHigh
 exports.thresholdLow = thresholdLow

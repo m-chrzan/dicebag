@@ -7,13 +7,13 @@ const {
   bonusAdd,
   bonusSubtract,
   negative,
-  explode,
+  explodeAbove,
   explodeUnder,
   keepHigh,
   keepLow,
-  again,
+  againAbove,
   againUnder,
-  threshold,
+  thresholdHigh,
   thresholdLow
 } = require('../src/dice.js')
 
@@ -452,7 +452,7 @@ describe('compound dice', () => {
 
 describe('exploding dice', () => {
   describe('6E1d6', () => {
-    const die = explode(constant(6), d(constant(1), constant(6)))
+    const die = explodeAbove(constant(6), d(constant(1), constant(6)))
     testDie(die, {
       diceCount: 1,
       average: {
@@ -470,7 +470,7 @@ describe('exploding dice', () => {
   })
 
   describe('6E2d6', () => {
-    const die = explode(constant(6), d(constant(2), constant(6)))
+    const die = explodeAbove(constant(6), d(constant(2), constant(6)))
     testDie(die, {
       diceCount: 2,
       average: {
@@ -560,7 +560,7 @@ describe('keep', () => {
 
 describe('again', () => {
   describe('10A1d10', () => {
-    const die = again(constant(10), d(constant(1), constant(10)))
+    const die = againAbove(constant(10), d(constant(1), constant(10)))
 
     testDie(die, {
       variableDiceCount: {
@@ -608,7 +608,7 @@ describe('again', () => {
 
 describe('threshold', () => {
   describe('8T3d10', () => {
-    const die = threshold(constant(8), d(constant(3), constant(10)))
+    const die = thresholdHigh(constant(8), d(constant(3), constant(10)))
 
     testDie(die, {
       diceCount: 3,

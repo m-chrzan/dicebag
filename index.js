@@ -8,7 +8,7 @@ const interpret = tree => {
   case 'd':
     return D.d(interpret(tree.left), interpret(tree.right))
   case 'E':
-    return D.explode(interpret(tree.left), interpret(tree.right))
+    return D.explodeAbove(interpret(tree.left), interpret(tree.right))
   case 'e':
     return D.explodeUnder(interpret(tree.left), interpret(tree.right))
   case 'K':
@@ -16,11 +16,11 @@ const interpret = tree => {
   case 'k':
     return D.keepLow(interpret(tree.left), interpret(tree.right))
   case 'A':
-    return D.again(interpret(tree.left), interpret(tree.right))
+    return D.againAbove(interpret(tree.left), interpret(tree.right))
   case 'a':
     return D.againUnder(interpret(tree.left), interpret(tree.right))
   case 'T':
-    return D.threshold(interpret(tree.left), interpret(tree.right))
+    return D.thresholdHigh(interpret(tree.left), interpret(tree.right))
   case 't':
     return D.thresholdLow(interpret(tree.left), interpret(tree.right))
   case 'add':
