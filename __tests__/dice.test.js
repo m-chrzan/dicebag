@@ -12,6 +12,7 @@ const {
   keepHigh,
   keepLow,
   again,
+  againUnder,
   threshold
 } = require('../src/dice.js')
 
@@ -573,6 +574,29 @@ describe('again', () => {
       },
       bounds: {
         low: 1,
+        high: Infinity,
+        expectLow: true,
+        expectHigh: false
+      }
+    })
+  })
+
+  describe('1a1d6', () => {
+    const die = againUnder(constant(1), d(constant(1), constant(6)))
+
+    testDie(die, {
+      variableDiceCount: {
+        min: 1,
+        max: Infinity
+      },
+      average: {
+        average: 4.2
+      },
+      variance: {
+        variance: 2.24
+      },
+      bounds: {
+        low: 2,
         high: Infinity,
         expectLow: true,
         expectHigh: false

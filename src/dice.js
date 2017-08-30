@@ -162,6 +162,42 @@ const again = (die1, die2) => {
   }
 }
 
+const againUnder = (die1, die2) => {
+  return () => {
+    const againOn = roll(die1)
+    let rolls = []
+    let rollAgain = []
+
+    const rollDie = (die) => {
+      const roll = die()
+
+      if (roll <= againOn) {
+        rollAgain.push(die)
+      }
+
+      let returnedOriginal = false
+      rolls.push(() => {
+        if (!returnedOriginal) {
+          returnedOriginal = true
+          return roll
+        } else {
+          return die()
+        }
+      })
+    }
+
+    die2().forEach(rollDie)
+
+    while (rollAgain.length > 0) {
+      const oldRollAgain = rollAgain
+      rollAgain = []
+      oldRollAgain.forEach(rollDie)
+    }
+
+    return rolls
+  }
+}
+
 const threshold = (die1, die2) => {
   return () => {
     const cutoff = roll(die1)
@@ -193,4 +229,5 @@ exports.explodeUnder = explodeUnder
 exports.keepHigh = keepHigh
 exports.keepLow = keepLow
 exports.again = again
+exports.againUnder = againUnder
 exports.threshold = threshold

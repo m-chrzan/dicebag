@@ -219,6 +219,16 @@ describe('parse', () => {
         right: { type: 'constant', value: 10 }
       }
     })
+
+    expect(parse('10a3d10')).toEqual({
+      type: 'a',
+      left: { type: 'constant', value: 10 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 3 },
+        right: { type: 'constant', value: 10 }
+      }
+    })
   })
 
   it('parases dice with threshold', () => {

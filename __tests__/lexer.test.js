@@ -203,6 +203,16 @@ describe('lex', () => {
         { type: 'constant', value: 6 }
       ])
     })
+
+    test('6a3d6', () => {
+      expect(lex('6a3d6')).toEqual([
+        { type: 'constant', value: 6 },
+        { type: 'a' },
+        { type: 'constant', value: 3 },
+        { type: 'd' },
+        { type: 'constant', value: 6 }
+      ])
+    })
   })
 
   describe('threshold', () => {
