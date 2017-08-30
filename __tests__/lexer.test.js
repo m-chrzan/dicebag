@@ -97,6 +97,30 @@ describe('lex', () => {
     })
   })
 
+  describe('lexes multiplication', () => {
+    it('1d6 * 1d4', () => {
+      expect(lex('1d6 * 1d4')).toEqual([
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 6 },
+        { type: 'bigTimes' },
+        { type: 'constant', value: 1 },
+        { type: 'd' },
+        { type: 'constant', value: 4 }
+      ])
+    })
+
+    it('2d17 * 4', () => {
+      expect(lex('2d17 * 4')).toEqual([
+        { type: 'constant', value: 2 },
+        { type: 'd' },
+        { type: 'constant', value: 17 },
+        { type: 'bigTimes' },
+        { type: 'constant', value: 4 }
+      ])
+    })
+  })
+
   describe('lexes parentheses', () => {
     it('(1d6)d6', () => {
       expect(lex('(1d6)d6')).toEqual([

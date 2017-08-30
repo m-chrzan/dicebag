@@ -27,6 +27,8 @@ const interpret = tree => {
     return D.add(interpret(tree.left), interpret(tree.right))
   case 'subtract':
     return D.subtract(interpret(tree.left), interpret(tree.right))
+  case 'multiply':
+    return D.multiply(interpret(tree.left), interpret(tree.right))
   case 'negative':
     return D.negative(interpret(tree.value))
   case 'bonusAdd':

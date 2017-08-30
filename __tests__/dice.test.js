@@ -4,6 +4,7 @@ const {
   d,
   add,
   subtract,
+  multiply,
   bonusAdd,
   bonusSubtract,
   negative,
@@ -315,6 +316,28 @@ describe('subtract', () => {
     describe('3d6 - 2d8 - 1d1', () => testDie(die, testSpecs, 700))
   })
 })
+
+describe('multiply', () => {
+  describe('1d6 * 3', () => {
+    const die = multiply(d(constant(1), constant(6)), constant(3))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 10.5
+      },
+      variance: {
+        variance: 26.25
+      },
+      bounds: {
+        low: 3,
+        high: 18,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+})
+
 
 describe('bonusAdd', () => {
   describe('1d20+3', () => {

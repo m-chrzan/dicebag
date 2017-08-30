@@ -44,6 +44,12 @@ const subtract = (die1, die2) => {
   }
 }
 
+const multiply = (die1, die2) => {
+  return () => {
+    return [() => roll(die1) * roll(die2)]
+  }
+}
+
 const bonusAdd = (die1, die2) => {
   return () => {
     return die1().map(die => {
@@ -187,6 +193,7 @@ exports.constant = constant
 exports.d = d
 exports.add = add
 exports.subtract = subtract
+exports.multiply = multiply
 exports.bonusAdd = bonusAdd
 exports.bonusSubtract = bonusSubtract
 exports.negative = negative
