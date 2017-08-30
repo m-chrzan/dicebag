@@ -173,6 +173,16 @@ describe('parse', () => {
         right: { type: 'constant', value: 6 }
       }
     })
+
+    expect(parse('1e1d6')).toEqual({
+      type: 'e',
+      left: { type: 'constant', value: 1 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 6 }
+      }
+    })
   })
 
   it('parses dice with keep high', () => {

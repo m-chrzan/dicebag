@@ -61,6 +61,7 @@ newSymbol('d', (parser) => {
   }
 })
 newDieOperation('E')
+newDieOperation('e')
 newDieOperation('K')
 newDieOperation('k')
 newDieOperation('A')

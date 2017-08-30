@@ -9,6 +9,8 @@ const interpret = tree => {
     return D.d(interpret(tree.left), interpret(tree.right))
   case 'E':
     return D.explode(interpret(tree.left), interpret(tree.right))
+  case 'e':
+    return D.explodeUnder(interpret(tree.left), interpret(tree.right))
   case 'K':
     return D.keepHigh(interpret(tree.left), interpret(tree.right))
   case 'k':

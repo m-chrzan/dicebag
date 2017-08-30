@@ -8,6 +8,7 @@ const {
   bonusSubtract,
   negative,
   explode,
+  explodeUnder,
   keepHigh,
   keepLow,
   again,
@@ -475,6 +476,24 @@ describe('exploding dice', () => {
       },
       variance: {
         variance: 2 * 10.64
+      },
+      bounds: {
+        low: 2,
+        expectLow: true,
+        high: Infinity
+      }
+    })
+  })
+
+  describe('1e1d6', () => {
+    const die = explodeUnder(constant(1), d(constant(1), constant(6)))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 4.2
+      },
+      variance: {
+        variance: 2.24
       },
       bounds: {
         low: 2,

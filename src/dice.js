@@ -73,6 +73,21 @@ const explode = (die1, die2) => {
   }
 }
 
+const explodeUnder = (die1, die2) => {
+  return () => {
+    const explodeOn = roll(die1)
+    return die2().map(die => () => {
+      let lastRoll = die()
+      let total = lastRoll
+      while (lastRoll <= explodeOn) {
+        lastRoll = die()
+        total += lastRoll
+      }
+      return total
+    })
+  }
+}
+
 const keepHigh = (die1, die2) => {
   return () => {
     const numberToKeep = roll(die1)
@@ -174,6 +189,7 @@ exports.bonusAdd = bonusAdd
 exports.bonusSubtract = bonusSubtract
 exports.negative = negative
 exports.explode = explode
+exports.explodeUnder = explodeUnder
 exports.keepHigh = keepHigh
 exports.keepLow = keepLow
 exports.again = again
