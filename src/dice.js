@@ -50,6 +50,12 @@ const multiply = (die1, die2) => {
   }
 }
 
+const divide = (die1, die2) => {
+  return () => {
+    return [() => Math.floor(roll(die1) / roll(die2))]
+  }
+}
+
 const bonusAdd = (die1, die2) => {
   return () => {
     return die1().map(die => {
@@ -194,6 +200,7 @@ exports.d = d
 exports.add = add
 exports.subtract = subtract
 exports.multiply = multiply
+exports.divide = divide
 exports.bonusAdd = bonusAdd
 exports.bonusSubtract = bonusSubtract
 exports.negative = negative

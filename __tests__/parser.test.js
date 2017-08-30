@@ -113,6 +113,22 @@ describe('parse', () => {
     })
   })
 
+  it('parses dice division', () => {
+    expect(parse('1d6 / 2d8')).toEqual({
+      type: 'divide',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 6 }
+      },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 2 },
+        right: { type: 'constant', value: 8 }
+      }
+    })
+  })
+
   it('parses additive bonuses', () => {
     expect(parse('3d4+1')).toEqual({
       type: 'bonusAdd',

@@ -5,6 +5,7 @@ const {
   add,
   subtract,
   multiply,
+  divide,
   bonusAdd,
   bonusSubtract,
   negative,
@@ -331,6 +332,27 @@ describe('multiply', () => {
       bounds: {
         low: 3,
         high: 18,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+})
+
+describe('divide', () => {
+  describe('1d8 / 2', () => {
+    const die = divide(d(constant(1), constant(8)), constant(2))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 2
+      },
+      variance: {
+        variance: 1.5
+      },
+      bounds: {
+        low: 0,
+        high: 4,
         expectLow: true,
         expectHigh: true
       }

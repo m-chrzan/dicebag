@@ -81,6 +81,7 @@ The parser recognizes the following grammar:
           | Die ' + ' Die
           | Die ' - ' Die
           | Die ' * ' Die
+          | Die ' / ' Die
           | Die '+' Die
           | Die '-' Die
           | '-' Die
@@ -109,6 +110,8 @@ Semantics are defined in terms of the `pool` function.
 * `D - E` is equivalent to `D + (-E)`.
 * `D * E` generates a dicepool with a single value - the produc of `roll(D)` and
   `roll(E)`.
+* `D / E` generates a dicepool with a single value - the result of integer
+  division of `roll(D)` and `roll(E)`.
 * `D+E` is the additive bonus operation. For each die in `D`'s pool, the die is
   rolled and `roll(E)` is added to its result.
 * `D-E` is equivalent to `D+(-E)`.
@@ -140,7 +143,10 @@ Semantics are defined in terms of the `pool` function.
 
 Additionally:
 
-* The binary arithmetic operations (` + `, ` - `) are left associative.
+* The binary arithmetic operations (` + `, ` - `, ` * `, ` / `) are left
+  associative.
+* The binary arithmetic operations bind as expected (multiplication and division
+  bind stronger than addition and subtraction).
 * The bonus operations (`+`, `-`) are left associative. They bind stronger than
   arithmetic operations.
 * The die operations (`d`, `E`, `K`, etc.) are right associative (`1d2d3` is

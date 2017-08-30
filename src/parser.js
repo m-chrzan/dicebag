@@ -72,6 +72,7 @@ newDieOperation('t')
 newInfix('bigPlus', 20, { type: 'add' })
 newInfix('bigMinus', 20, { type: 'subtract' })
 newInfix('bigTimes', 23, { type: 'multiply' })
+newInfix('bigDivide', 23, { type: 'divide' })
 newInfix('plus', 25, { type: 'bonusAdd' })
 newInfix('minus', 25, { type: 'bonusSubtract' })
 newSymbol('minus', (parser) => {
