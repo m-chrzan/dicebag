@@ -241,6 +241,16 @@ describe('parse', () => {
         right: { type: 'constant', value: 8 }
       }
     })
+
+    expect(parse('7t4d8')).toEqual({
+      type: 't',
+      left: { type: 'constant', value: 7 },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 4 },
+        right: { type: 'constant', value: 8 }
+      }
+    })
   })
 
   describe('parsing parentheses', () => {

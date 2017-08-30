@@ -225,5 +225,15 @@ describe('lex', () => {
         { type: 'constant', value: 10 }
       ])
     })
+
+    test('8t3d10', () => {
+      expect(lex('8t3d10')).toEqual([
+        { type: 'constant', value: 8 },
+        { type: 't' },
+        { type: 'constant', value: 3 },
+        { type: 'd' },
+        { type: 'constant', value: 10 }
+      ])
+    })
   })
 })

@@ -13,7 +13,8 @@ const {
   keepLow,
   again,
   againUnder,
-  threshold
+  threshold,
+  thresholdLow
 } = require('../src/dice.js')
 
 const defaultNumberRolls = 500
@@ -616,6 +617,26 @@ describe('threshold', () => {
       },
       variance: {
         variance: 0.63
+      },
+      bounds: {
+        low: 0,
+        high: 3,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+
+  describe('4t3d10', () => {
+    const die = thresholdLow(constant(4), d(constant(3), constant(10)))
+
+    testDie(die, {
+      diceCount: 3,
+      average: {
+        average: 1.2
+      },
+      variance: {
+        variance: 0.72
       },
       bounds: {
         low: 0,

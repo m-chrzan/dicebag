@@ -21,6 +21,8 @@ const interpret = tree => {
     return D.againUnder(interpret(tree.left), interpret(tree.right))
   case 'T':
     return D.threshold(interpret(tree.left), interpret(tree.right))
+  case 't':
+    return D.thresholdLow(interpret(tree.left), interpret(tree.right))
   case 'add':
     return D.add(interpret(tree.left), interpret(tree.right))
   case 'subtract':
