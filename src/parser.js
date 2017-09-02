@@ -82,6 +82,8 @@ newSymbol('minus', (parser) => {
   }
 })
 
+newInfix(' x ', 24, { type: 'repeat' })
+
 newSymbol('end', null, -1)
 
 const newParser = (tokens) => {

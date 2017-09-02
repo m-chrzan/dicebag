@@ -193,6 +193,19 @@ const thresholdLow = (die1, die2) => {
   return threshold(lessThanOrEqual, die1, die2)
 }
 
+const repeat = (die1, die2) => {
+  return () => {
+    const times = roll(die2)
+
+    let results = []
+    for (let i = 0; i < times; i++) {
+      results = results.concat(die1())
+    }
+
+    return results
+  }
+}
+
 exports.pool = pool
 exports.roll = roll
 exports.constant = constant
@@ -212,3 +225,4 @@ exports.againAbove = againAbove
 exports.againUnder = againUnder
 exports.thresholdHigh = thresholdHigh
 exports.thresholdLow = thresholdLow
+exports.repeat = repeat
