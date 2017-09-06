@@ -241,6 +241,18 @@ describe('lex', () => {
     })
   })
 
+  describe('bonusMultiply', () => {
+    test('3d4*1', () => {
+      expect(lex('3d4*1')).toEqual([
+        { type: 'constant', value: 3 },
+        { type: 'd' },
+        { type: 'constant', value: 4 },
+        { type: 'times' },
+        { type: 'constant', value: 1 }
+      ])
+    })
+  })
+
   describe('again', () => {
     test('6A3d6', () => {
       expect(lex('6A3d6')).toEqual([

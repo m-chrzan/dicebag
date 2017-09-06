@@ -8,6 +8,7 @@ const {
   divide,
   bonusAdd,
   bonusSubtract,
+  bonusMultiply,
   negative,
   explodeAbove,
   explodeUnder,
@@ -455,6 +456,46 @@ describe('bonusSubtract', () => {
       bounds: {
         low: 0,
         high: 9,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+})
+
+describe('bonusMultiply', () => {
+  describe('1d20*3', () => {
+    const die = bonusMultiply(d(constant(1), constant(20)), constant(3))
+    testDie(die, {
+      diceCount: 1,
+      average: {
+        average: 31.5
+      },
+      variance: {
+        variance: 299.25
+      },
+      bounds: {
+        low: 3,
+        high: 60,
+        expectLow: true,
+        expectHigh: true
+      }
+    })
+  })
+
+  describe('3d4*2', () => {
+    const die = bonusMultiply(d(constant(3), constant(4)), constant(2))
+    testDie(die, {
+      diceCount: 3,
+      average: {
+        average: 15
+      },
+      variance: {
+        variance: 15
+      },
+      bounds: {
+        low: 6,
+        high: 24,
         expectLow: true,
         expectHigh: true
       }

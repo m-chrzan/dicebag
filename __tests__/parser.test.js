@@ -153,6 +153,18 @@ describe('parse', () => {
     })
   })
 
+  it('parses multiplicative bonuses', () => {
+    expect(parse('3d4*1')).toEqual({
+      type: 'bonusMultiply',
+      left: {
+        type: 'd',
+        left: { type: 'constant', value: 3 },
+        right: { type: 'constant', value: 4 }
+      },
+      right: { type: 'constant', value: 1 }
+    })
+  })
+
   test('bonus binds stronger than addition', () => {
     expect(parse('2d6 + 2d6+2d6')).toEqual({
       type: 'add',
