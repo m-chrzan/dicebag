@@ -76,6 +76,7 @@ newInfix('bigDivide', 23, { type: 'divide' })
 newInfix('plus', 25, { type: 'bonusAdd' })
 newInfix('minus', 25, { type: 'bonusSubtract' })
 newInfix('times', 26, { type: 'bonusMultiply' })
+newInfix('divide', 26, { type: 'bonusDivide' })
 newSymbol('minus', (parser) => {
   return {
     type: 'negative',

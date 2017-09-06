@@ -81,6 +81,14 @@ const bonusMultiply = (die1, die2) => {
   }
 }
 
+const bonusDivide = (die1, die2) => {
+  return () => {
+    return die1().map(die => {
+      return () => Math.floor(die() / roll(die2))
+    })
+  }
+}
+
 const explode = (comparison, die1, die2) => {
   return () => {
     const explodeOn = roll(die1)
@@ -225,6 +233,7 @@ exports.divide = divide
 exports.bonusAdd = bonusAdd
 exports.bonusSubtract = bonusSubtract
 exports.bonusMultiply = bonusMultiply
+exports.bonusDivide = bonusDivide
 exports.negative = negative
 exports.explodeAbove = explodeAbove
 exports.explodeUnder = explodeUnder
