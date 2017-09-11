@@ -24,7 +24,7 @@ const parseArgs = () => {
 
 const rollDie = (string, roller) => {
   try {
-    const die = parse(string.trim())
+    const die = parse(string)
     console.log(roller(die))
   } catch (error) {
     console.log(error.message)
@@ -32,8 +32,14 @@ const rollDie = (string, roller) => {
 }
 
 const runIoLoop = (roller) => {
+  console.log("Type 'quit' or 'exit' to exit")
   process.stdin.setEncoding('utf8')
   process.stdin.on('data', (string) => {
+    string = string.trim()
+    if (string === 'exit' || string === 'quit') {
+      process.exit(0)
+    }
+
     rollDie(string, roller)
   })
 }
