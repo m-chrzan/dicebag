@@ -3,17 +3,35 @@
 
 const { parse, roll, pool } = require('../index.js')
 
+const rollRoller = {
+  roll: roll,
+  format: value => value
+}
+
+const poolRoller = {
+  roll: pool,
+  format: values => {
+    if (values.length === 0) {
+      return '[]'
+    } else {
+      return '[ ' + values.reduce((acc, next) => (
+        acc + ', ' + String(next)
+      )) + ' ]'
+    }
+  }
+}
+
 const parseArgs = () => {
   const args = process.argv.slice(2)
   const parsedArgs = {
-    roller: roll,
+    roller: rollRoller,
     expression: null
   }
 
   while (args.length > 0) {
     const arg = args.shift()
     if (arg === '-p') {
-      parsedArgs.roller = pool
+      parsedArgs.roller = poolRoller
     } else {
       parsedArgs.expression = arg
     }
@@ -25,7 +43,8 @@ const parseArgs = () => {
 const rollDie = (string, roller) => {
   try {
     const die = parse(string)
-    console.log(roller(die))
+    const roll = roller.roll(die)
+    console.log(roller.format(roll))
   } catch (error) {
     console.log(error.message)
   }
