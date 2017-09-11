@@ -43,6 +43,8 @@ const interpret = tree => {
     return D.bonusDivide(interpret(tree.left), interpret(tree.right))
   case 'repeat':
     return D.repeat(interpret(tree.left), interpret(tree.right))
+  case 'collect':
+    return D.collect(interpret(tree.value))
   }
 }
 

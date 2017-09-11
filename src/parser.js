@@ -44,6 +44,16 @@ newSymbol('constant', function() {
   return { type: 'constant', value: this.value }
 })
 
+const newBrackets = (openSymbol, closeSymbol, valueWrapper) => {
+  newSymbol(openSymbol, function(parser) {
+    const value = parser.expression(1)
+    parser.match(closeSymbol)
+    return valueWrapper(value)
+  })
+
+  newSymbol(closeSymbol)
+}
+
 newSymbol('(', function(parser) {
   const value = parser.expression(1)
   parser.match(')')
@@ -51,6 +61,8 @@ newSymbol('(', function(parser) {
 })
 
 newSymbol(')')
+
+newBrackets('[', ']', value => ({ type: 'collect', value: value }))
 
 newDieOperation('d')
 newSymbol('d', (parser) => {

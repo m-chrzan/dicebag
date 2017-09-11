@@ -171,6 +171,18 @@ describe('lex', () => {
         { type: 'constant', value: 4 }
       ])
     })
+
+    it('[2d8]+3', () => {
+      expect(lex('[2d8]+3')).toEqual([
+        { type: '[' },
+        { type: 'constant', value: 2 },
+        { type: 'd' },
+        { type: 'constant', value: 8 },
+        { type: ']' },
+        { type: 'plus' },
+        { type: 'constant', value: 3 }
+      ])
+    })
   })
 
   describe('lexes negatives', () => {

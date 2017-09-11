@@ -222,6 +222,10 @@ const repeat = (die1, die2) => {
   }
 }
 
+const collect = die => {
+  return () => [() => roll(die)]
+}
+
 exports.pool = pool
 exports.roll = roll
 exports.constant = constant
@@ -244,3 +248,4 @@ exports.againUnder = againUnder
 exports.thresholdHigh = thresholdHigh
 exports.thresholdLow = thresholdLow
 exports.repeat = repeat
+exports.collect = collect

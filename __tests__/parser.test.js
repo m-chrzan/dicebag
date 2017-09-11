@@ -325,6 +325,25 @@ describe('parse', () => {
     })
   })
 
+  it('parses dice with collecting', () => {
+    expect(parse('[2d6] x 1d4')).toEqual({
+      type: 'repeat',
+      left: {
+        type: 'collect',
+        value: {
+          type: 'd',
+          left: { type: 'constant', value: 2 },
+          right: { type: 'constant', value: 6 }
+        }
+      },
+      right: {
+        type: 'd',
+        left: { type: 'constant', value: 1 },
+        right: { type: 'constant', value: 4 }
+      }
+    })
+  })
+
   describe('parsing parentheses', () => {
     test('(1d6)d6', () => {
       expect(parse('(1d6)d6')).toEqual({
